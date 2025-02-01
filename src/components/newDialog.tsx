@@ -1,5 +1,11 @@
-import { RefObject } from "react";
-import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import {
+  Button,
+  CreateToasterReturn,
+  Fieldset,
+  Input,
+  Stack,
+} from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -12,22 +18,59 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Field } from "./ui/field";
+import { NewJob, Job, TaskStatus } from "@/types";
 
 interface NewDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  jobNameRef: RefObject<HTMLInputElement>;
-  jobDateRef: RefObject<HTMLInputElement>;
-  addJob: () => void;
+  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+  toaster: CreateToasterReturn;
 }
 
-const NewDialog = ({
-  open,
-  setOpen,
-  jobNameRef,
-  jobDateRef,
-  addJob,
-}: NewDialogProps) => {
+const NewDialog = ({ setJobs, toaster }: NewDialogProps) => {
+  const jobNameRef = useRef<HTMLInputElement>(null);
+  const jobDateRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const createJob = (newJobData: NewJob): Job => {
+    const now = new Date();
+
+    return {
+      id: crypto.randomUUID(),
+      ...newJobData,
+      tasks: newJobData.tasks.map((task) => ({
+        ...task,
+        id: crypto.randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+        status: task.status || TaskStatus.NOT_STARTED,
+      })),
+      createdAt: now,
+      updatedAt: now,
+    };
+  };
+
+  // 新しいジョブを作成して状態にセット
+  const addJob = () => {
+    const jobName = jobNameRef.current?.value ?? "";
+    const jobDate = jobDateRef.current?.value;
+    const newJobData: NewJob = {
+      name: jobName, // ジョブ名
+      dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
+      tasks: [
+        { name: "Task 1", status: TaskStatus.NOT_STARTED }, // タスク1
+        { name: "Task 2", status: TaskStatus.IN_PROGRESS }, // タスク2
+      ],
+      steps: 0,
+    };
+
+    const newJob = createJob(newJobData); // `createJob`で新しいジョブを作成
+    setJobs((prevJobs) => [...prevJobs, newJob]);
+    setOpen(false);
+
+    toaster.create({
+      title: "ジョブが作成されました！",
+      type: "success",
+    });
+  };
+
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>

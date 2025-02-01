@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { NewJob, Job, TaskStatus } from "./types";
+import { useEffect, useState } from "react";
+import { Job } from "./types";
 import {
   Box,
   Button,
@@ -14,54 +14,8 @@ import TaskSteps from "./components/TaskSteps";
 
 function App() {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const jobNameRef = useRef<HTMLInputElement>(null);
-  const jobDateRef = useRef<HTMLInputElement>(null);
-  //const store = new LazyStore("data.json");
-  const [open, setOpen] = useState<boolean>(false);
   const [store, setStore] = useState<Store | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
-
-  const createJob = (newJobData: NewJob): Job => {
-    const now = new Date();
-
-    return {
-      id: crypto.randomUUID(),
-      ...newJobData,
-      tasks: newJobData.tasks.map((task) => ({
-        ...task,
-        id: crypto.randomUUID(),
-        createdAt: now,
-        updatedAt: now,
-        status: task.status || TaskStatus.NOT_STARTED,
-      })),
-      createdAt: now,
-      updatedAt: now,
-    };
-  };
-
-  // 新しいジョブを作成して状態にセット
-  const addJob = () => {
-    const jobName = jobNameRef.current?.value ?? "";
-    const jobDate = jobDateRef.current?.value;
-    const newJobData: NewJob = {
-      name: jobName, // ジョブ名
-      dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
-      tasks: [
-        { name: "Task 1", status: TaskStatus.NOT_STARTED }, // タスク1
-        { name: "Task 2", status: TaskStatus.IN_PROGRESS }, // タスク2
-      ],
-      steps: 0,
-    };
-
-    const newJob = createJob(newJobData); // `createJob`で新しいジョブを作成
-    setJobs((prevJobs) => [...prevJobs, newJob]);
-    setOpen(false);
-
-    toaster.create({
-      title: "ジョブが作成されました！",
-      type: "success",
-    });
-  };
 
   const handleStepChange = (e: StepsChangeDetails, jobIndex: number) => {
     setJobs((prev) =>
@@ -112,15 +66,8 @@ function App() {
   return (
     <>
       <Toaster />
-      <Button onClick={addJob}>addJob</Button>
       <Button onClick={() => console.log(jobs)}>show jobs</Button>
-      <NewDialog
-        open={open}
-        setOpen={setOpen}
-        jobNameRef={jobNameRef}
-        jobDateRef={jobDateRef}
-        addJob={addJob}
-      />
+      <NewDialog setJobs={setJobs} toaster={toaster} />
       {jobs.length > 0 ? (
         jobs.map((job, jobIndex) => (
           <Box
