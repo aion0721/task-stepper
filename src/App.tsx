@@ -1,31 +1,17 @@
 import { useEffect, useState } from "react";
 import { Job } from "./types";
-import {
-  Box,
-  Button,
-  HStack,
-  Stack,
-  StepsChangeDetails,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
 import NewDialog from "@/components/NewDialog";
+import EditDialog from "@/components/EditDialog";
 import TaskSteps from "./components/TaskSteps";
+import { useJobs } from "./context/JobContext";
 
 function App() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const { jobs, setJobs } = useJobs();
   const [store, setStore] = useState<Store | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
-
-  const handleStepChange = (e: StepsChangeDetails, jobIndex: number) => {
-    setJobs((prev) =>
-      prev.map((job, index) =>
-        index === jobIndex ? { ...job, steps: e.step } : job
-      )
-    );
-  };
 
   // ストアの初期化
   useEffect(() => {
@@ -69,7 +55,7 @@ function App() {
     <>
       <Toaster />
       <Button onClick={() => console.log(jobs)}>show jobs</Button>
-      <NewDialog setJobs={setJobs} toaster={toaster} />
+      <NewDialog toaster={toaster} />
       {jobs.length > 0 ? (
         jobs.map((job, jobIndex) => (
           <Box
@@ -88,13 +74,9 @@ function App() {
                   </Text>
                 )}
               </Box>
-              <TaskSteps
-                job={job}
-                handleStepChange={handleStepChange}
-                jobIndex={jobIndex}
-              />
+              <TaskSteps jobIndex={jobIndex} />
               <Stack>
-                <Button colorPalette="teal">Edit</Button>
+                <EditDialog toaster={toaster} jobIndex={jobIndex} />
                 <Button
                   colorPalette="red"
                   disabled={job.steps !== job.tasks.length}

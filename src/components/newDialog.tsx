@@ -19,13 +19,14 @@ import {
 } from "./ui/dialog";
 import { Field } from "./ui/field";
 import { NewJob, Job, TaskStatus } from "@/types";
+import { useJobs } from "@/context/JobContext";
 
 interface NewDialogProps {
-  setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   toaster: CreateToasterReturn;
 }
 
-const NewDialog = ({ setJobs, toaster }: NewDialogProps) => {
+const NewDialog = ({ toaster }: NewDialogProps) => {
+  const { setJobs } = useJobs();
   const jobNameRef = useRef<HTMLInputElement>({
     value: "",
   } as HTMLInputElement);

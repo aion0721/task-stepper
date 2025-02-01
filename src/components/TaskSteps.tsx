@@ -6,15 +6,15 @@ import {
   StepsRoot,
 } from "@/components/ui/steps";
 import { Button, Group, StepsChangeDetails } from "@chakra-ui/react";
-import { Job } from "@/types";
+import { useJobs } from "@/context/JobContext";
 
 interface TaskStepsProps {
-  job: Job; // types.tsで定義されているJob型
-  handleStepChange: (e: StepsChangeDetails, jobIndex: number) => void; // ステップ変更時のコールバック関数
   jobIndex: number; // ジョブのインデックス
 }
 
-const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
+const TaskSteps = ({ jobIndex }: TaskStepsProps) => {
+  const { jobs, setJobs } = useJobs();
+  const job = jobs[jobIndex];
   const hashToRange = (input: string, range: number): number => {
     let hash = 0;
     for (let i = 0; i < input.length; i++) {
@@ -35,6 +35,14 @@ const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
     "teal",
     "orange",
   ];
+
+  const handleStepChange = (e: StepsChangeDetails) => {
+    setJobs((prev) =>
+      prev.map((job, index) =>
+        index === jobIndex ? { ...job, steps: e.step } : job
+      )
+    );
+  };
   return (
     <StepsRoot
       m="10px"
@@ -42,7 +50,7 @@ const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
       count={job.tasks.length}
       step={job.steps}
       colorPalette={colorPalettes[hashToRange(job.id, colorPalettes.length)]}
-      onStepChange={(e) => handleStepChange(e, jobIndex)}
+      onStepChange={(e) => handleStepChange(e)}
     >
       <StepsList>
         {job.tasks.map((task, taskIndex) => (
