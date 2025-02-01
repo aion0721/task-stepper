@@ -48,14 +48,14 @@ const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
           <StepsItem key={task.id} index={taskIndex} title={task.name} />
         ))}
       </StepsList>
-      <Group>
+      <Group w="100%">
         <StepsPrevTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" w="50%">
             Prev
           </Button>
         </StepsPrevTrigger>
         <StepsNextTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" w="50%">
             Next
           </Button>
         </StepsNextTrigger>
