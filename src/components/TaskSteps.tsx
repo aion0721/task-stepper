@@ -1,5 +1,4 @@
 import {
-  StepsContent,
   StepsItem,
   StepsList,
   StepsNextTrigger,
@@ -49,11 +48,6 @@ const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
           <StepsItem key={task.id} index={taskIndex} title={task.name} />
         ))}
       </StepsList>
-      {job.tasks.map((task, taskIndex) => (
-        <StepsContent key={task.id} index={taskIndex}>
-          {task.name}
-        </StepsContent>
-      ))}
       <Group>
         <StepsPrevTrigger asChild>
           <Button variant="outline" size="sm">

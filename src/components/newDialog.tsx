@@ -26,9 +26,15 @@ interface NewDialogProps {
 }
 
 const NewDialog = ({ setJobs, toaster }: NewDialogProps) => {
-  const jobNameRef = useRef<HTMLInputElement>(null);
+  const jobNameRef = useRef<HTMLInputElement>({
+    value: "",
+  } as HTMLInputElement);
   const jobDateRef = useRef<HTMLInputElement>(null);
+  const firstTaskRef = useRef<HTMLInputElement>({
+    value: "",
+  } as HTMLInputElement);
   const [open, setOpen] = useState<boolean>(false);
+
   const createJob = (newJobData: NewJob): Job => {
     const now = new Date();
 
@@ -49,14 +55,12 @@ const NewDialog = ({ setJobs, toaster }: NewDialogProps) => {
 
   // 新しいジョブを作成して状態にセット
   const addJob = () => {
-    const jobName = jobNameRef.current?.value ?? "";
     const jobDate = jobDateRef.current?.value;
     const newJobData: NewJob = {
-      name: jobName, // ジョブ名
+      name: jobNameRef.current.value, // ジョブ名
       dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
       tasks: [
-        { name: "Task 1", status: TaskStatus.NOT_STARTED }, // タスク1
-        { name: "Task 2", status: TaskStatus.IN_PROGRESS }, // タスク2
+        { name: firstTaskRef.current.value, status: TaskStatus.NOT_STARTED }, // タスク1
       ],
       steps: 0,
     };
@@ -91,11 +95,14 @@ const NewDialog = ({ setJobs, toaster }: NewDialogProps) => {
               </Fieldset.HelperText>
             </Stack>
             <Fieldset.Content>
-              <Field label="name">
-                <Input placeholder="Job name" ref={jobNameRef} />
+              <Field label="ジョブ名">
+                <Input placeholder="新規契約" ref={jobNameRef} />
               </Field>
-              <Field label="date">
+              <Field label="対応期日">
                 <Input type="date" ref={jobDateRef} />
+              </Field>
+              <Field label="最初のタスク">
+                <Input placeholder="見積書を作る" ref={firstTaskRef} />
               </Field>
             </Fieldset.Content>
           </Fieldset.Root>
