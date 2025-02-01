@@ -3,43 +3,21 @@ import { NewJob, Job, TaskStatus } from "./types";
 import {
   Box,
   Button,
-  Fieldset,
-  Group,
   HStack,
-  Input,
-  Stack,
   StepsChangeDetails,
   Text,
 } from "@chakra-ui/react";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from "./components/ui/dialog";
-import {
-  StepsContent,
-  StepsItem,
-  StepsList,
-  StepsNextTrigger,
-  StepsPrevTrigger,
-  StepsRoot,
-} from "@/components/ui/steps";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
-import { Field } from "./components/ui/field";
+import NewDialog from "@/components/NewDialog";
+import TaskSteps from "./components/TaskSteps";
 
 function App() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const jobNameRef = useRef<HTMLInputElement>(null);
   const jobDateRef = useRef<HTMLInputElement>(null);
   //const store = new LazyStore("data.json");
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [store, setStore] = useState<Store | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -131,69 +109,18 @@ function App() {
     }
   }, [jobs, store, isInitialized]);
 
-  const hashToRange = (input: string, range: number): number => {
-    let hash = 0;
-    for (let i = 0; i < input.length; i++) {
-      hash = (hash << 5) - hash + input.charCodeAt(i);
-      hash |= 0; // 32ビット整数に変換
-    }
-    return Math.abs(hash) % range;
-  };
-
-  const colorPalettes = [
-    "red",
-    "blue",
-    "green",
-    "yellow",
-    "pink",
-    "purple",
-    "cyan",
-    "teal",
-    "orange",
-  ];
-
   return (
     <>
       <Toaster />
       <Button onClick={addJob}>addJob</Button>
       <Button onClick={() => console.log(jobs)}>show jobs</Button>
-      <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-        <DialogTrigger asChild>
-          <Button variant="outline" size="sm">
-            Open Dialog
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Job</DialogTitle>
-          </DialogHeader>
-          <DialogBody>
-            <Fieldset.Root>
-              <Stack>
-                <Fieldset.Legend>ジョブ追加</Fieldset.Legend>
-                <Fieldset.HelperText>
-                  必要項目を記載してジョブを新規作成します。
-                </Fieldset.HelperText>
-              </Stack>
-              <Fieldset.Content>
-                <Field label="name">
-                  <Input placeholder="Job name" ref={jobNameRef} />
-                </Field>
-                <Field label="date">
-                  <Input type="date" ref={jobDateRef} />
-                </Field>
-              </Fieldset.Content>
-            </Fieldset.Root>
-          </DialogBody>
-          <DialogFooter>
-            <DialogActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogActionTrigger>
-            <Button onClick={addJob}>Save</Button>
-          </DialogFooter>
-          <DialogCloseTrigger />
-        </DialogContent>
-      </DialogRoot>
+      <NewDialog
+        open={open}
+        setOpen={setOpen}
+        jobNameRef={jobNameRef}
+        jobDateRef={jobDateRef}
+        addJob={addJob}
+      />
       {jobs.length > 0 ? (
         jobs.map((job, jobIndex) => (
           <Box
@@ -212,42 +139,11 @@ function App() {
                   </Text>
                 )}
               </Box>
-              <StepsRoot
-                defaultStep={job.steps}
-                count={job.tasks.length}
-                step={job.steps}
-                colorPalette={
-                  colorPalettes[hashToRange(job.id, colorPalettes.length)]
-                }
-                onStepChange={(e) => handleStepChange(e, jobIndex)}
-              >
-                <StepsList>
-                  {job.tasks.map((task, taskIndex) => (
-                    <StepsItem
-                      key={task.id}
-                      index={taskIndex}
-                      title={task.name}
-                    />
-                  ))}
-                </StepsList>
-                {job.tasks.map((task, taskIndex) => (
-                  <StepsContent key={task.id} index={taskIndex}>
-                    {task.name}
-                  </StepsContent>
-                ))}
-                <Group>
-                  <StepsPrevTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Prev
-                    </Button>
-                  </StepsPrevTrigger>
-                  <StepsNextTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Next
-                    </Button>
-                  </StepsNextTrigger>
-                </Group>
-              </StepsRoot>
+              <TaskSteps
+                job={job}
+                handleStepChange={handleStepChange}
+                jobIndex={jobIndex}
+              />
             </HStack>
           </Box>
         ))
