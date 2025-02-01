@@ -37,6 +37,7 @@ const TaskSteps = ({ job, handleStepChange, jobIndex }: TaskStepsProps) => {
   ];
   return (
     <StepsRoot
+      m="10px"
       defaultStep={job.steps}
       count={job.tasks.length}
       step={job.steps}

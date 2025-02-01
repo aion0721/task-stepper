@@ -4,8 +4,10 @@ import {
   Box,
   Button,
   HStack,
+  Stack,
   StepsChangeDetails,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
@@ -73,12 +75,12 @@ function App() {
           <Box
             key={job.id}
             m="20px"
-            p="20px"
+            paddingX="10px"
             borderWidth="1px"
             borderColor="border.disabled"
           >
             <HStack>
-              <Box>
+              <Box w="200px">
                 <Text>Job Name: {job?.name}</Text>
                 {job?.dueDate && (
                   <Text>
@@ -91,6 +93,15 @@ function App() {
                 handleStepChange={handleStepChange}
                 jobIndex={jobIndex}
               />
+              <Stack>
+                <Button colorPalette="teal">Edit</Button>
+                <Button
+                  colorPalette="red"
+                  disabled={job.steps !== job.tasks.length}
+                >
+                  Close
+                </Button>
+              </Stack>
             </HStack>
           </Box>
         ))
