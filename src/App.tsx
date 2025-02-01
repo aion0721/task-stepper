@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { NewJob, Job, TaskStatus } from "./types";
-import { Button, Input } from "@chakra-ui/react";
+import { Box, Button, HStack, Input } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -90,22 +90,27 @@ function App() {
       </DialogRoot>
       {jobs.length > 0 ? (
         jobs.map((job) => (
-          <div key={job.id} style={{ marginBottom: "20px" }}>
+          <Box
+            key={job.id}
+            m="20px"
+            p="20px"
+            borderWidth="1px"
+            borderColor="border.disabled"
+          >
             <h2>Job ID: {job.id}</h2>
             <p>Job Name: {job.name}</p>
             <p>Due Date: {job.dueDate.toLocaleDateString()}</p>
-            <h3>Tasks:</h3>
-            <ul>
+            <HStack>
               {job.tasks.map((task) => (
-                <li key={task.id}>
+                <Box key={task.id}>
                   {task.name} - Status: {task.status}
-                </li>
+                </Box>
               ))}
-            </ul>
-          </div>
+            </HStack>
+          </Box>
         ))
       ) : (
-        <p>No jobs available.</p>
+        <Box>No tasks</Box>
       )}
     </>
   );
