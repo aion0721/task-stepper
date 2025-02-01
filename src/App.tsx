@@ -3,9 +3,11 @@ import { NewJob, Job, TaskStatus } from "./types";
 import {
   Box,
   Button,
+  Fieldset,
   Group,
   HStack,
   Input,
+  Stack,
   StepsChangeDetails,
   Text,
 } from "@chakra-ui/react";
@@ -30,6 +32,7 @@ import {
 } from "@/components/ui/steps";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
+import { Field } from "./components/ui/field";
 
 function App() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -165,8 +168,22 @@ function App() {
             <DialogTitle>Add Job</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Input placeholder="Job name" ref={jobNameRef} />
-            <Input type="date" ref={jobDateRef} />
+            <Fieldset.Root>
+              <Stack>
+                <Fieldset.Legend>ジョブ追加</Fieldset.Legend>
+                <Fieldset.HelperText>
+                  必要項目を記載してジョブを新規作成します。
+                </Fieldset.HelperText>
+              </Stack>
+              <Fieldset.Content>
+                <Field label="name">
+                  <Input placeholder="Job name" ref={jobNameRef} />
+                </Field>
+                <Field label="date">
+                  <Input type="date" ref={jobDateRef} />
+                </Field>
+              </Fieldset.Content>
+            </Fieldset.Root>
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
