@@ -5,6 +5,7 @@ export interface Job {
   name: string;
   dueDate: Date;
   tasks: Task[]; // 複数のTaskを保持
+  steps: number;
   createdAt: Date;
   updatedAt: Date;
 }
