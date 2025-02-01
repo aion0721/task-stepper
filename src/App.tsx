@@ -28,7 +28,6 @@ import {
   StepsPrevTrigger,
   StepsRoot,
 } from "@/components/ui/steps";
-import { LazyStore } from "@tauri-apps/plugin-store";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
 
@@ -129,6 +128,27 @@ function App() {
     }
   }, [jobs, store, isInitialized]);
 
+  const hashToRange = (input: string, range: number): number => {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+      hash = (hash << 5) - hash + input.charCodeAt(i);
+      hash |= 0; // 32ビット整数に変換
+    }
+    return Math.abs(hash) % range;
+  };
+
+  const colorPalettes = [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "pink",
+    "purple",
+    "cyan",
+    "teal",
+    "orange",
+  ];
+
   return (
     <>
       <Toaster />
@@ -179,6 +199,9 @@ function App() {
                 defaultStep={job.steps}
                 count={job.tasks.length}
                 step={job.steps}
+                colorPalette={
+                  colorPalettes[hashToRange(job.id, colorPalettes.length)]
+                }
                 onStepChange={(e) => handleStepChange(e, jobIndex)}
               >
                 <StepsList>
