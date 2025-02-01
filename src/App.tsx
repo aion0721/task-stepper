@@ -1,6 +1,14 @@
 import { useRef, useState } from "react";
 import { NewJob, Job, TaskStatus } from "./types";
-import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Group,
+  HStack,
+  Input,
+  StepsChangeDetails,
+  Text,
+} from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -16,6 +24,8 @@ import {
   StepsContent,
   StepsItem,
   StepsList,
+  StepsNextTrigger,
+  StepsPrevTrigger,
   StepsRoot,
 } from "@/components/ui/steps";
 import { Toaster, toaster } from "@/components/ui/toaster";
@@ -55,6 +65,7 @@ function App() {
         { name: "Task 1", status: TaskStatus.NOT_STARTED }, // タスク1
         { name: "Task 2", status: TaskStatus.IN_PROGRESS }, // タスク2
       ],
+      steps: 0,
     };
 
     const newJob = createJob(newJobData); // `createJob`で新しいジョブを作成
@@ -65,6 +76,14 @@ function App() {
       title: "ジョブが作成されました！",
       type: "success",
     });
+  };
+
+  const handleStepChange = (e: StepsChangeDetails, jobIndex: number) => {
+    setJobs((prev) =>
+      prev.map((job, index) =>
+        index === jobIndex ? { ...job, steps: e.step } : job
+      )
+    );
   };
 
   return (
@@ -96,7 +115,7 @@ function App() {
         </DialogContent>
       </DialogRoot>
       {jobs.length > 0 ? (
-        jobs.map((job) => (
+        jobs.map((job, jobIndex) => (
           <Box
             key={job.id}
             m="20px"
@@ -109,18 +128,38 @@ function App() {
                 <Text>Job Name: {job.name}</Text>
                 <Text>Due Date: {job.dueDate.toLocaleDateString()}</Text>
               </Box>
-              <StepsRoot defaultStep={0} count={job.tasks.length}>
+              <StepsRoot
+                defaultStep={job.steps}
+                count={job.tasks.length}
+                step={job.steps}
+                onStepChange={(e) => handleStepChange(e, jobIndex)}
+              >
                 <StepsList>
-                  {job.tasks.map((task, index) => (
-                    <StepsItem index={index} title={task.name} />
+                  {job.tasks.map((task, taskIndex) => (
+                    <StepsItem
+                      key={task.id}
+                      index={taskIndex}
+                      title={task.name}
+                    />
                   ))}
                 </StepsList>
-                {job.tasks.map((task, index) => (
-                  <StepsContent index={index}>
-                    {index}
+                {job.tasks.map((task, taskIndex) => (
+                  <StepsContent key={task.id} index={taskIndex}>
                     {task.name}
                   </StepsContent>
                 ))}
+                <Group>
+                  <StepsPrevTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Prev
+                    </Button>
+                  </StepsPrevTrigger>
+                  <StepsNextTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Next
+                    </Button>
+                  </StepsNextTrigger>
+                </Group>
               </StepsRoot>
             </HStack>
           </Box>
