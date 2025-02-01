@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { NewJob, Job, TaskStatus } from "./types";
-import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -12,6 +12,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./components/ui/dialog";
+import {
+  StepsContent,
+  StepsItem,
+  StepsList,
+  StepsRoot,
+} from "@/components/ui/steps";
 import { Toaster, toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -65,6 +71,7 @@ function App() {
     <>
       <Toaster />
       <Button onClick={addJob}>addJob</Button>
+      <Button onClick={() => console.log(jobs)}>show jobs</Button>
       <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
         <DialogTrigger asChild>
           <Button variant="outline" size="sm">
@@ -97,15 +104,24 @@ function App() {
             borderWidth="1px"
             borderColor="border.disabled"
           >
-            <h2>Job ID: {job.id}</h2>
-            <p>Job Name: {job.name}</p>
-            <p>Due Date: {job.dueDate.toLocaleDateString()}</p>
             <HStack>
-              {job.tasks.map((task) => (
-                <Box key={task.id}>
-                  {task.name} - Status: {task.status}
-                </Box>
-              ))}
+              <Box>
+                <Text>Job Name: {job.name}</Text>
+                <Text>Due Date: {job.dueDate.toLocaleDateString()}</Text>
+              </Box>
+              <StepsRoot defaultStep={0} count={job.tasks.length}>
+                <StepsList>
+                  {job.tasks.map((task, index) => (
+                    <StepsItem index={index} title={task.name} />
+                  ))}
+                </StepsList>
+                {job.tasks.map((task, index) => (
+                  <StepsContent index={index}>
+                    {index}
+                    {task.name}
+                  </StepsContent>
+                ))}
+              </StepsRoot>
             </HStack>
           </Box>
         ))
