@@ -1,49 +1,59 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { NewJob, Job, TaskStatus } from "./types";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [job, setJob] = useState<Job>();
+  const createJob = (newJobData: NewJob): Job => {
+    const now = new Date();
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+    return {
+      id: crypto.randomUUID(),
+      ...newJobData,
+      tasks: newJobData.tasks.map((task) => ({
+        ...task,
+        id: crypto.randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+        status: task.status || TaskStatus.NOT_STARTED,
+      })),
+      createdAt: now,
+      updatedAt: now,
+    };
+  };
+  // 新しいジョブを作成して状態にセット
+  const addJob = () => {
+    const newJobData: NewJob = {
+      name: "Example Job", // ジョブ名
+      dueDate: new Date("2023-12-31"), // 期日
+      tasks: [
+        { name: "Task 1", status: TaskStatus.NOT_STARTED }, // タスク1
+        { name: "Task 2", status: TaskStatus.IN_PROGRESS }, // タスク2
+      ],
+    };
+
+    const tempJob = createJob(newJobData); // `createJob`で新しいジョブを作成
+    setJob(tempJob); // 作成したジョブを状態にセット
+  };
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+      <button onClick={addJob}>addJob</button>
+      Hello, tauri!
+      {job && (
+        <div>
+          <h2>Job ID: {job.id}</h2>
+          <p>Job Name: {job.name}</p>
+          <p>Due Date: {job.dueDate.toLocaleDateString()}</p>
+          <h3>Tasks:</h3>
+          <ul>
+            {job.tasks.map((task) => (
+              <li key={task.id}>
+                {task.name} - Status: {task.status}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </main>
   );
 }
