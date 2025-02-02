@@ -17,26 +17,6 @@ interface TaskStepsProps {
 const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
   const { jobs, setJobs } = useJobs();
   const job = jobs[jobIndex];
-  const hashToRange = (input: string, range: number): number => {
-    let hash = 0;
-    for (let i = 0; i < input.length; i++) {
-      hash = (hash << 5) - hash + input.charCodeAt(i);
-      hash |= 0; // 32ビット整数に変換
-    }
-    return Math.abs(hash) % range;
-  };
-
-  const colorPalettes = [
-    "red",
-    "blue",
-    "green",
-    "yellow",
-    "pink",
-    "purple",
-    "cyan",
-    "teal",
-    "orange",
-  ];
 
   const handleStepChange = (e: StepsChangeDetails) => {
     setJobs((prev) =>
@@ -52,7 +32,7 @@ const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
       defaultStep={job.steps}
       count={job.tasks.length}
       step={job.steps}
-      colorPalette={colorPalettes[hashToRange(job.id, colorPalettes.length)]}
+      colorPalette={job.color}
       onStepChange={(e) => handleStepChange(e)}
     >
       <StepsList>

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
+import { Button, Fieldset, HStack, Input, Stack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -12,10 +12,11 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Field } from "./ui/field";
-import { NewJob, Job } from "@/types";
+import { NewJob, Job, JobStatus, JobColor } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 import { BiAddToQueue } from "react-icons/bi";
+import { Radio, RadioGroup } from "./ui/radio";
 
 const NewDialog = () => {
   const { setJobs } = useJobs();
@@ -27,6 +28,9 @@ const NewDialog = () => {
     value: "",
   } as HTMLInputElement);
   const [open, setOpen] = useState<boolean>(false);
+  const [color, setColor] = useState<JobColor>(JobColor.Orange);
+
+  const jobColors = Object.values(JobColor);
 
   const createJob = (newJobData: NewJob): Job => {
     const now = new Date();
@@ -51,6 +55,8 @@ const NewDialog = () => {
     const newJobData: NewJob = {
       name: jobNameRef.current.value, // ジョブ名
       dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
+      status: JobStatus.IN_PROGRESS,
+      color: color,
       tasks: [
         { name: firstTaskRef.current.value }, // タスク1
       ],
@@ -96,6 +102,24 @@ const NewDialog = () => {
               </Field>
               <Field label="最初のタスク">
                 <Input placeholder="見積書を作る" ref={firstTaskRef} />
+              </Field>
+              <Field label="色選択">
+                <RadioGroup
+                  value={color}
+                  onValueChange={(e) => setColor(e.value as JobColor)}
+                >
+                  <HStack>
+                    {jobColors.map((jobColor) => (
+                      <Radio
+                        key={jobColor}
+                        value={jobColor}
+                        colorPalette={jobColor}
+                      >
+                        {jobColor}
+                      </Radio>
+                    ))}
+                  </HStack>
+                </RadioGroup>
               </Field>
             </Fieldset.Content>
           </Fieldset.Root>
