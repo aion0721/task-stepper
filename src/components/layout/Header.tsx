@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Heading, Icon } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
 

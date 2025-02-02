@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
+import { Button, Fieldset, Flex, Input, Stack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -15,15 +15,15 @@ import { Field } from "./ui/field";
 import { Job, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
-import { BiEdit } from "react-icons/bi";
+import { BiEdit, BiMessageAdd, BiTrash } from "react-icons/bi";
 
 interface DialogProps {
-  jobIndex: number;
+  job: Job;
 }
 
-const EditDialog = ({ jobIndex }: DialogProps) => {
-  const { jobs, setJobs } = useJobs();
-  const [targetJob, setTargetJob] = useState<Job>(jobs[jobIndex]);
+const EditDialog = ({ job }: DialogProps) => {
+  const { setJobs } = useJobs();
+  const [targetJob, setTargetJob] = useState<Job>(job);
   const [open, setOpen] = useState<boolean>(false);
 
   // 新しいジョブを作成して状態にセット
@@ -68,10 +68,23 @@ const EditDialog = ({ jobIndex }: DialogProps) => {
     setTargetJob({ ...targetJob, tasks: updatedTasks });
   };
 
-  // jobs[jobIndex]が変化したらtargetJobを更新
+  const handleTaskDelete = (targetTask: Task) => {
+    // タスク配列を更新
+    const updatedTasks = targetJob.tasks.filter(
+      (task) => task.id !== targetTask.id
+    );
+
+    // targetJobの状態を更新
+    setTargetJob({ ...targetJob, tasks: updatedTasks });
+  };
+
   useEffect(() => {
-    setTargetJob(jobs[jobIndex]);
-  }, [jobs, jobIndex]);
+    setTargetJob(job);
+  }, [job]);
+
+  const handleCancel = () => {
+    setTargetJob(job);
+  };
 
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
@@ -118,13 +131,24 @@ const EditDialog = ({ jobIndex }: DialogProps) => {
                 />
               </Field>
               <Field label="タスク">
-                <Button onClick={handleAddTask}>AddTask</Button>
+                <Button onClick={handleAddTask} w="100%" colorPalette="blue">
+                  AddTask
+                  <BiMessageAdd />
+                </Button>
                 {targetJob.tasks.map((task, index) => (
-                  <Input
-                    defaultValue={task.name}
-                    key={index}
-                    onChange={(e) => handleTaskUpdate(e, task)}
-                  ></Input>
+                  <Flex w="100%" gap="4">
+                    <Input
+                      defaultValue={task.name}
+                      key={index}
+                      onChange={(e) => handleTaskUpdate(e, task)}
+                    ></Input>
+                    <Button
+                      onClick={() => handleTaskDelete(task)}
+                      colorPalette="red"
+                    >
+                      <BiTrash />
+                    </Button>
+                  </Flex>
                 ))}
               </Field>
               <Field label="step">{targetJob.steps}</Field>
@@ -133,7 +157,9 @@ const EditDialog = ({ jobIndex }: DialogProps) => {
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
           </DialogActionTrigger>
           <Button onClick={updateJob}>Update</Button>
         </DialogFooter>

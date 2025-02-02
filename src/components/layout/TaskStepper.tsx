@@ -77,7 +77,7 @@ const TaskStepper = () => {
               </Box>
               <TaskSteps jobIndex={jobIndex} w="80%" />
               <Stack w="20%">
-                <EditDialog jobIndex={jobIndex} />
+                <EditDialog job={jobs[jobIndex]} />
                 {job.status === JobStatus.IN_PROGRESS ? (
                   <Button
                     colorPalette="green"
