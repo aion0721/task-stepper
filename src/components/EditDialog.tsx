@@ -140,7 +140,7 @@ const EditDialog = ({ job }: DialogProps) => {
                   <BiMessageAdd />
                 </Button>
                 {targetJob.tasks.map((task, index) => (
-                  <Flex w="100%" gap="4">
+                  <Flex key={task.id} w="100%" gap="4">
                     <Input
                       defaultValue={task.name}
                       key={index}

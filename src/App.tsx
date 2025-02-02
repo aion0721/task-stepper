@@ -5,11 +5,25 @@ import { Store } from "@tauri-apps/plugin-store";
 import { useJobs } from "./context/JobContext";
 import Header from "./components/layout/Header";
 import TaskStepper from "./components/layout/TaskStepper";
+import { Global } from "@emotion/react";
 
 function App() {
   const { jobs, setJobs } = useJobs();
   const [store, setStore] = useState<Store | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const GlobalStyles = () => (
+    <Global
+      styles={`
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-x: hidden; /* 横スクロール防止 */
+      }
+    `}
+    />
+  );
 
   // ストアの初期化
   useEffect(() => {
@@ -51,6 +65,7 @@ function App() {
 
   return (
     <>
+      <GlobalStyles />
       <Toaster />
       <Header />
       <TaskStepper />

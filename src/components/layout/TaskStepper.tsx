@@ -32,7 +32,7 @@ const TaskStepper = () => {
   };
 
   return (
-    <Box mt="80px">
+    <Box mt="80px" height="calc(100vh - 80px)" as="main">
       {jobs.length > 0 ? (
         jobs.map((job, jobIndex) => (
           <Box
