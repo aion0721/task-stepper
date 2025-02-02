@@ -1,4 +1,4 @@
-import { Heading, Button, Center, Stack, Text } from "@chakra-ui/react";
+import { Heading, Button, Center, Stack } from "@chakra-ui/react";
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/drawer";
 import { useAccordion } from "@/context/AccordionContext";
 import { useJobs } from "@/context/JobContext";
-import Header from "./layout/Header";
 import { BiFilter } from "react-icons/bi";
 const FilterDrawer = () => {
   const { jobs } = useJobs();
