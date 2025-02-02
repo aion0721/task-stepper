@@ -34,18 +34,18 @@ const TaskStepper = () => {
     PENDING: "orange",
   };
 
-  const handleClose = (jobIndex: number) => {
+  const handleClose = (jobid: string) => {
     setJobs((prev) =>
-      prev.map((job: Job, index) =>
-        index === jobIndex ? { ...job, status: JobStatus.COMPLETED } : job
+      prev.map((job: Job) =>
+        job.id === jobid ? { ...job, status: JobStatus.COMPLETED } : job
       )
     );
   };
 
-  const handleReopen = (jobIndex: number) => {
+  const handleReopen = (jobid: string) => {
     setJobs((prev) =>
-      prev.map((job: Job, index) =>
-        index === jobIndex ? { ...job, status: JobStatus.IN_PROGRESS } : job
+      prev.map((job: Job) =>
+        job.id === jobid ? { ...job, status: JobStatus.IN_PROGRESS } : job
       )
     );
   };
@@ -73,7 +73,7 @@ const TaskStepper = () => {
         variant="enclosed"
       >
         {filteredJobs.length > 0 ? (
-          filteredJobs.map((job, jobIndex) => (
+          filteredJobs.map((job) => (
             <AccordionItem
               key={job.id}
               value={job.id}
@@ -137,13 +137,13 @@ const TaskStepper = () => {
                         </DataList.Item>
                       </DataList.Root>
                     </Box>
-                    <TaskSteps jobIndex={jobIndex} w="80%" />
+                    <TaskSteps job={job} w="80%" />
                     <Stack w="20%">
-                      <EditDialog job={jobs[jobIndex]} />
+                      <EditDialog job={job} />
                       {job.status === JobStatus.IN_PROGRESS ? (
                         <Button
                           colorPalette="green"
-                          onClick={() => handleClose(jobIndex)}
+                          onClick={() => handleClose(job.id)}
                           disabled={job.steps !== job.tasks.length}
                         >
                           Close
@@ -152,7 +152,7 @@ const TaskStepper = () => {
                       ) : (
                         <Button
                           colorPalette="purple"
-                          onClick={() => handleReopen(jobIndex)}
+                          onClick={() => handleReopen(job.id)}
                           disabled={job.steps !== job.tasks.length}
                         >
                           ReOpen

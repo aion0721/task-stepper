@@ -8,21 +8,20 @@ import {
 import { Button, Group, StepsChangeDetails } from "@chakra-ui/react";
 import { useJobs } from "@/context/JobContext";
 import { BiCaretLeft, BiCaretRight } from "react-icons/bi";
-import { JobStatus } from "@/types";
+import { Job, JobStatus } from "@/types";
 
 interface TaskStepsProps {
-  jobIndex: number; // ジョブのインデックス
+  job: Job;
   w: string;
 }
 
-const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
-  const { jobs, setJobs } = useJobs();
-  const job = jobs[jobIndex];
+const TaskSteps = ({ job, w }: TaskStepsProps) => {
+  const { setJobs } = useJobs();
 
   const handleStepChange = (e: StepsChangeDetails) => {
     setJobs((prev) =>
-      prev.map((job, index) =>
-        index === jobIndex ? { ...job, steps: e.step } : job
+      prev.map((prevJob) =>
+        prevJob.id === job.id ? { ...job, steps: e.step } : prevJob
       )
     );
   };
