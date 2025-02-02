@@ -49,8 +49,6 @@ const NewDialog = () => {
       tasks: newJobData.tasks.map((task) => ({
         ...task,
         id: crypto.randomUUID(),
-        createdAt: now,
-        updatedAt: now,
       })),
       createdAt: now,
       updatedAt: now,
