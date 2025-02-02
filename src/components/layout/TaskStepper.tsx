@@ -1,5 +1,4 @@
 import {
-  AbsoluteCenter,
   Box,
   Button,
   DataList,
@@ -11,6 +10,7 @@ import {
 import TaskSteps from "../TaskSteps";
 import EditDialog from "../EditDialog";
 import { useJobs } from "@/context/JobContext";
+import { useAccordion } from "@/context/AccordionContext";
 import { JobStatus } from "@/types";
 import { Job } from "@/types";
 import { BiCaretRightCircle, BiCheckCircle } from "react-icons/bi";
@@ -20,11 +20,10 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
 } from "../ui/accordion";
-import { useState } from "react";
 
 const TaskStepper = () => {
   const { jobs, setJobs } = useJobs();
-  const [accordion, setAccordion] = useState<string[]>([]);
+  const { accordion, setAccordion } = useAccordion();
 
   const statusColorMap: { [key in JobStatus]?: string } = {
     COMPELETED: "gray",

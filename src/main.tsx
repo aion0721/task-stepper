@@ -1,15 +1,15 @@
-import { Provider } from "@/components/ui/provider";
+import { Provider as ChakraProvder } from "@/components/ui/provider";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { JobsProvider } from "./context/JobContext";
+import { AppContextProvider } from "./context/AppContextProvider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <JobsProvider>
-      <Provider>
+    <AppContextProvider>
+      <ChakraProvder>
         <App />
-      </Provider>
-    </JobsProvider>
+      </ChakraProvder>
+    </AppContextProvider>
   </React.StrictMode>
 );

@@ -1,7 +1,8 @@
 import React from "react";
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, HStack } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
+import FilterDrawer from "../FilterDrawer";
 
 const Header: React.FC = () => {
   return (
@@ -27,8 +28,11 @@ const Header: React.FC = () => {
         </Heading>
       </Flex>
 
-      {/* ボタン */}
-      <NewDialog />
+      <HStack>
+        {/* ボタン */}
+        <NewDialog />
+        <FilterDrawer />
+      </HStack>
     </Flex>
   );
 };
