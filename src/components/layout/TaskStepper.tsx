@@ -16,7 +16,7 @@ import { useJobs } from "@/context/JobContext";
 import { useAccordion } from "@/context/AccordionContext";
 import { JobStatus } from "@/types";
 import { Job } from "@/types";
-import { BiCaretRightCircle, BiCheckCircle } from "react-icons/bi";
+import { BiCaretRightCircle, BiCheckCircle, BiNote } from "react-icons/bi";
 import {
   AccordionItem,
   AccordionItemContent,
@@ -24,6 +24,7 @@ import {
   AccordionRoot,
 } from "../ui/accordion";
 import { useFilter } from "@/context/FilterContext";
+import { Tooltip } from "../ui/tooltip";
 
 const TaskStepper = () => {
   const { jobs, setJobs } = useJobs();
@@ -107,6 +108,9 @@ const TaskStepper = () => {
                     {job.name}
                     <Spacer />
                     {new Date(job.createdAt).toLocaleDateString()}
+                    <Tooltip content={job.memo}>
+                      <BiNote />
+                    </Tooltip>
                   </AccordionItemTrigger>
                 </Box>
                 <AccordionItemContent>
