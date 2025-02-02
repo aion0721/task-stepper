@@ -7,6 +7,8 @@ import NewDialog from "@/components/NewDialog";
 import EditDialog from "@/components/EditDialog";
 import TaskSteps from "./components/TaskSteps";
 import { useJobs } from "./context/JobContext";
+import Header from "./components/layout/Header";
+import TaskStepper from "./components/layout/TaskStepper";
 
 function App() {
   const { jobs, setJobs } = useJobs();
@@ -54,42 +56,10 @@ function App() {
   return (
     <>
       <Toaster />
+      <Header />
       <Button onClick={() => console.log(jobs)}>show jobs</Button>
       <NewDialog toaster={toaster} />
-      {jobs.length > 0 ? (
-        jobs.map((job, jobIndex) => (
-          <Box
-            key={job.id}
-            m="20px"
-            paddingX="10px"
-            borderWidth="1px"
-            borderColor="border.disabled"
-          >
-            <HStack>
-              <Box w="200px">
-                <Text>Job Name: {job?.name}</Text>
-                {job?.dueDate && (
-                  <Text>
-                    Due Date: {new Date(job.dueDate).toLocaleDateString()}
-                  </Text>
-                )}
-              </Box>
-              <TaskSteps jobIndex={jobIndex} />
-              <Stack>
-                <EditDialog toaster={toaster} jobIndex={jobIndex} />
-                <Button
-                  colorPalette="red"
-                  disabled={job.steps !== job.tasks.length}
-                >
-                  Close
-                </Button>
-              </Stack>
-            </HStack>
-          </Box>
-        ))
-      ) : (
-        <Box>No tasks</Box>
-      )}
+      <TaskStepper toaster={toaster} />
     </>
   );
 }

@@ -20,12 +20,9 @@ import {
 import { Field } from "./ui/field";
 import { NewJob, Job, TaskStatus } from "@/types";
 import { useJobs } from "@/context/JobContext";
+import { toaster } from "@/components/ui/toaster";
 
-interface NewDialogProps {
-  toaster: CreateToasterReturn;
-}
-
-const NewDialog = ({ toaster }: NewDialogProps) => {
+const NewDialog = () => {
   const { setJobs } = useJobs();
   const jobNameRef = useRef<HTMLInputElement>({
     value: "",
@@ -80,7 +77,7 @@ const NewDialog = ({ toaster }: NewDialogProps) => {
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          Open Dialog
+          新規ジョブを作成
         </Button>
       </DialogTrigger>
       <DialogContent>

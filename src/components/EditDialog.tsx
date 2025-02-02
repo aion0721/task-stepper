@@ -26,7 +26,7 @@ interface DialogProps {
   jobIndex: number;
 }
 
-const NewDialog = ({ toaster, jobIndex }: DialogProps) => {
+const EditDialog = ({ toaster, jobIndex }: DialogProps) => {
   const { jobs, setJobs } = useJobs();
   const [targetJob, setTargetJob] = useState<Job>(jobs[jobIndex]);
   const [open, setOpen] = useState<boolean>(false);
@@ -146,4 +146,4 @@ const NewDialog = ({ toaster, jobIndex }: DialogProps) => {
   );
 };
 
-export default NewDialog;
+export default EditDialog;
