@@ -22,6 +22,7 @@ export interface Job {
   steps: number;
   status: JobStatus;
   color: JobColor;
+  memo: string;
   createdAt: Date;
   updatedAt: Date;
 }

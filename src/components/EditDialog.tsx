@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Fieldset, Flex, Input, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Fieldset,
+  Flex,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -86,10 +93,6 @@ const EditDialog = ({ job }: DialogProps) => {
     setTargetJob(job);
   }, [job]);
 
-  const handleCancel = () => {
-    setTargetJob(job);
-  };
-
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
@@ -156,6 +159,14 @@ const EditDialog = ({ job }: DialogProps) => {
                 ))}
               </Field>
               <Field label="step">{targetJob.steps}</Field>
+              <Field label="メモ">
+                <Textarea
+                  value={targetJob.memo}
+                  onChange={(e) =>
+                    setTargetJob({ ...targetJob, memo: e.target.value })
+                  }
+                ></Textarea>
+              </Field>
             </Fieldset.Content>
             <Fieldset.Content>
               <Button colorPalette="red" onClick={handleJobDelete}>
@@ -166,7 +177,7 @@ const EditDialog = ({ job }: DialogProps) => {
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button variant="outline" onClick={handleCancel}>
+            <Button variant="outline" onClick={() => setTargetJob(job)}>
               Cancel
             </Button>
           </DialogActionTrigger>

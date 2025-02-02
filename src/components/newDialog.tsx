@@ -1,5 +1,12 @@
 import { useRef, useState } from "react";
-import { Button, Fieldset, HStack, Input, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Fieldset,
+  HStack,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -27,6 +34,7 @@ const NewDialog = () => {
   const firstTaskRef = useRef<HTMLInputElement>({
     value: "",
   } as HTMLInputElement);
+  const memoRef = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<JobColor>(JobColor.Orange);
 
@@ -57,6 +65,7 @@ const NewDialog = () => {
       dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
       status: JobStatus.IN_PROGRESS,
       color: color,
+      memo: memoRef.current?.value || "",
       tasks: [
         { name: firstTaskRef.current.value }, // タスク1
       ],
@@ -120,6 +129,9 @@ const NewDialog = () => {
                     ))}
                   </HStack>
                 </RadioGroup>
+              </Field>
+              <Field label="メモ">
+                <Textarea ref={memoRef}></Textarea>
               </Field>
             </Fieldset.Content>
           </Fieldset.Root>
