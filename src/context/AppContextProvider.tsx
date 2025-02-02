@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import { JobsProvider } from "./JobContext";
 import { AccordionProvider } from "./AccordionContext";
+import { FilterProvider } from "./FilterContext";
 
 type AppContextProviderProps = {
   children: ReactNode;
@@ -10,7 +11,9 @@ type AppContextProviderProps = {
 export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   return (
     <JobsProvider>
-      <AccordionProvider>{children}</AccordionProvider>
+      <FilterProvider>
+        <AccordionProvider>{children}</AccordionProvider>
+      </FilterProvider>
     </JobsProvider>
   );
 };

@@ -3,6 +3,7 @@ import {
   Button,
   DataList,
   HStack,
+  Input,
   Spacer,
   Stack,
   Status,
@@ -20,10 +21,12 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
 } from "../ui/accordion";
+import { useFilter } from "@/context/FilterContext";
 
 const TaskStepper = () => {
   const { jobs, setJobs } = useJobs();
   const { accordion, setAccordion } = useAccordion();
+  const { setFilterText, filterText, filterStatus, sortOrder } = useFilter();
 
   const statusColorMap: { [key in JobStatus]?: string } = {
     COMPELETED: "gray",
@@ -46,17 +49,31 @@ const TaskStepper = () => {
       )
     );
   };
+  // フィルタリングされたジョブリスト
+  const filteredJobs = jobs
+    .filter((job) => job.name.includes(filterText)) // フィルタ条件で絞り込み
+    .filter((job) => filterStatus === "ALL" || job.status === filterStatus) // ステータスで絞り込み
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA; // ソート処理
+    });
 
   return (
     <Box mt="80px" height="calc(100vh - 80px)" as="main" px="20px">
+      <Input
+        placeholder="ジョブ名でフィルター"
+        value={filterText}
+        onChange={(e) => setFilterText(e.target.value)} // フィルタ条件を更新
+      />
       <AccordionRoot
         multiple
         value={accordion}
         onValueChange={(e) => setAccordion(e.value)}
         variant="enclosed"
       >
-        {jobs.length > 0 ? (
-          jobs.map((job, jobIndex) => (
+        {filteredJobs.length > 0 ? (
+          filteredJobs.map((job, jobIndex) => (
             <AccordionItem
               key={job.id}
               value={job.id}

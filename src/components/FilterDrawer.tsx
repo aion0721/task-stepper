@@ -1,4 +1,4 @@
-import { Heading, Button, Center, Stack } from "@chakra-ui/react";
+import { Heading, Button, Center, Stack, Input } from "@chakra-ui/react";
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -12,6 +12,9 @@ import {
 import { useAccordion } from "@/context/AccordionContext";
 import { useJobs } from "@/context/JobContext";
 import { BiFilter } from "react-icons/bi";
+import { useFilter } from "@/context/FilterContext";
+import { JobStatus } from "@/types";
+
 const FilterDrawer = () => {
   const { jobs } = useJobs();
   const { setAccordion } = useAccordion();
@@ -19,6 +22,9 @@ const FilterDrawer = () => {
   const inProgressJobIds = jobs
     .filter((job) => job.status === "IN_PROGRESS") // IN_PROGRESSのジョブをフィルタリング
     .map((job) => job.id); // IDのみ抽出
+
+  const { filterText, setFilterText, setFilterStatus, setSortOrder } =
+    useFilter();
 
   return (
     <DrawerRoot>
@@ -34,6 +40,39 @@ const FilterDrawer = () => {
           <DrawerTitle>FilterMenu</DrawerTitle>
         </DrawerHeader>
         <DrawerBody>
+          <Stack>
+            <Center>
+              <Heading>Filter</Heading>
+            </Center>
+            <Input
+              type="text"
+              placeholder="ジョブ名でフィルター"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+            />
+            <Button onClick={() => setFilterStatus(JobStatus.COMPLETED)}>
+              完了に絞る
+            </Button>
+            <Button onClick={() => setFilterStatus(JobStatus.IN_PROGRESS)}>
+              仕掛中に絞る
+            </Button>
+            <Button onClick={() => setFilterStatus("ALL")}>全量表示</Button>
+            <Button
+              onClick={() => {
+                setFilterText("");
+                setFilterStatus("ALL");
+              }}
+            >
+              フィルタクリア
+            </Button>
+          </Stack>
+          <Stack>
+            <Center>
+              <Heading>Sort</Heading>
+            </Center>
+            <Button onClick={() => setSortOrder("asc")}>古いもの順</Button>
+            <Button onClick={() => setSortOrder("desc")}>新しいもの順</Button>
+          </Stack>
           <Stack>
             <Center>
               <Heading>表示切り替え</Heading>
