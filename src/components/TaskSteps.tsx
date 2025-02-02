@@ -19,9 +19,12 @@ const TaskSteps = ({ job, w }: TaskStepsProps) => {
   const { setJobs } = useJobs();
 
   const handleStepChange = (e: StepsChangeDetails) => {
+    const now = new Date();
     setJobs((prev) =>
       prev.map((prevJob) =>
-        prevJob.id === job.id ? { ...job, steps: e.step } : prevJob
+        prevJob.id === job.id
+          ? { ...job, updatedAt: now, steps: e.step }
+          : prevJob
       )
     );
   };

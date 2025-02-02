@@ -5,6 +5,7 @@ import {
   Flex,
   Input,
   Stack,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import {
@@ -35,9 +36,11 @@ const EditDialog = ({ job }: DialogProps) => {
 
   // 新しいジョブを作成して状態にセット
   const updateJob = () => {
+    const newTargetJob = { ...targetJob, updatedAt: new Date() };
+
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
-        job.id === targetJob.id ? { ...job, ...targetJob } : job
+        job.id === targetJob.id ? { ...job, ...newTargetJob } : job
       )
     );
     setOpen(false);
@@ -46,7 +49,6 @@ const EditDialog = ({ job }: DialogProps) => {
       title: "ジョブが修正されました。",
       type: "success",
     });
-    console.log(targetJob);
   };
 
   const handleAddTask = () => {
@@ -166,6 +168,12 @@ const EditDialog = ({ job }: DialogProps) => {
                     setTargetJob({ ...targetJob, memo: e.target.value })
                   }
                 ></Textarea>
+              </Field>
+              <Field label="作成日">
+                <Text>{new Date(targetJob.createdAt).toISOString()}</Text>
+              </Field>
+              <Field label="更新日">
+                <Text>{new Date(targetJob.updatedAt).toISOString()}</Text>
               </Field>
             </Fieldset.Content>
             <Fieldset.Content>
