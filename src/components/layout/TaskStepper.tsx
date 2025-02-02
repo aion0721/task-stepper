@@ -1,12 +1,15 @@
 import {
   Box,
   Button,
+  ColorSwatch,
   DataList,
+  Flex,
   HStack,
   Input,
   Spacer,
   Stack,
   Status,
+  Text,
 } from "@chakra-ui/react";
 import TaskSteps from "../TaskSteps";
 import EditDialog from "../EditDialog";
@@ -92,9 +95,10 @@ const TaskStepper = () => {
                     <Status.Indicator />
                     {job?.status}
                   </Status.Root>
-                  ジョブ名：{job.name}, 作成日：
-                  {new Date(job.createdAt).toLocaleDateString()}
+                  <ColorSwatch value={job.color} />
+                  {job.name}
                   <Spacer />
+                  {new Date(job.createdAt).toLocaleDateString()}
                 </AccordionItemTrigger>
               </Box>
               <AccordionItemContent>
