@@ -1,0 +1,176 @@
+import { useTaskTemplates } from "@/context/TaskTemplateContext";
+import {
+  Box,
+  Button,
+  Fieldset,
+  Flex,
+  Heading,
+  Input,
+  Stack,
+} from "@chakra-ui/react";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogRoot,
+  DialogTrigger,
+} from "../ui/dialog";
+import { useState } from "react";
+import { Field } from "../ui/field";
+import { Task, TaskTemplate } from "@/types";
+import { BiMessageAdd, BiTrash } from "react-icons/bi";
+import { toaster } from "../ui/toaster";
+
+const TaskTemplatePage = () => {
+  const { taskTemplates, setTaskTemplates } = useTaskTemplates();
+  const [open, setOpen] = useState<boolean>(false);
+  const [targetTaskTemplate, setTargetTaskTemplate] = useState<TaskTemplate>({
+    id: crypto.randomUUID(),
+    name: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    tasks: [
+      {
+        id: crypto.randomUUID(),
+        name: "",
+      },
+    ],
+  });
+
+  const handleAddTask = () => {
+    const newTask = {
+      id: crypto.randomUUID(),
+      name: "New Task",
+    };
+
+    const updatedTasks = [...targetTaskTemplate.tasks, newTask];
+    setTargetTaskTemplate({ ...targetTaskTemplate, tasks: updatedTasks });
+  };
+
+  const handleTaskUpdate = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    task: Task
+  ) => {
+    const updatedName = e.target.value;
+    // タスク配列を更新
+    const updatedTasks = targetTaskTemplate.tasks.map((t) =>
+      t.id === task.id ? { ...t, name: updatedName, updatedAt: new Date() } : t
+    );
+
+    // targetJobの状態を更新
+    setTargetTaskTemplate({ ...targetTaskTemplate, tasks: updatedTasks });
+  };
+
+  const handleTaskDelete = (targetTask: Task) => {
+    // タスク配列を更新
+    const updatedTasks = targetTaskTemplate.tasks.filter(
+      (task) => task.id !== targetTask.id
+    );
+
+    // targetJobの状態を更新
+    setTargetTaskTemplate({ ...targetTaskTemplate, tasks: updatedTasks });
+  };
+
+  // 新しいジョブを作成して状態にセット
+  const addTaskTemplate = () => {
+    setTaskTemplates((prevTaskTemplate) => [
+      ...prevTaskTemplate,
+      targetTaskTemplate,
+    ]);
+    setTargetTaskTemplate({
+      id: crypto.randomUUID(),
+      name: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      tasks: [],
+    });
+    setOpen(false);
+
+    toaster.create({
+      title: "ジョブが作成されました！",
+      type: "success",
+    });
+  };
+
+  return (
+    <>
+      <Box mt="80px" height="calc(100vh - 80px)" as="main" px="20px">
+        <Heading>Template</Heading>
+        <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+          <DialogTrigger asChild>
+            <Button colorPalette="teal" variant="surface">
+              AddTemplate
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogBody>
+              <Fieldset.Root>
+                <Stack>
+                  <Fieldset.Legend>AddTemplate</Fieldset.Legend>
+                  <Fieldset.HelperText>Add Template</Fieldset.HelperText>
+                </Stack>
+                <Fieldset.Content>
+                  <Field label="TemplateName">
+                    <Input
+                      value={targetTaskTemplate.name}
+                      onChange={(e) =>
+                        setTargetTaskTemplate({
+                          ...targetTaskTemplate,
+                          name: e.target.value,
+                        })
+                      }
+                      placeholder="新規契約"
+                    />
+                  </Field>
+                  <Field label="タスク">
+                    <Button
+                      onClick={handleAddTask}
+                      w="100%"
+                      colorPalette="blue"
+                    >
+                      AddTask
+                      <BiMessageAdd />
+                    </Button>
+                    {targetTaskTemplate.tasks.map((task, index) => (
+                      <Flex key={task.id} w="100%" gap="4">
+                        <Input
+                          defaultValue={task.name}
+                          key={index}
+                          onChange={(e) => handleTaskUpdate(e, task)}
+                        ></Input>
+                        <Button
+                          onClick={() => handleTaskDelete(task)}
+                          colorPalette="red"
+                        >
+                          <BiTrash />
+                        </Button>
+                      </Flex>
+                    ))}
+                  </Field>
+                </Fieldset.Content>
+              </Fieldset.Root>
+            </DialogBody>
+            <DialogFooter>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogActionTrigger>
+              <Button onClick={addTaskTemplate}>Save</Button>
+            </DialogFooter>
+            <DialogCloseTrigger />
+          </DialogContent>
+        </DialogRoot>
+        {taskTemplates.length > 0
+          ? taskTemplates.map((taskTemplate) => (
+              <>
+                <Button>{taskTemplate.name}</Button>
+              </>
+            ))
+          : "no templates"}
+      </Box>
+    </>
+  );
+};
+
+export default TaskTemplatePage;
