@@ -15,6 +15,7 @@ import { Field } from "./ui/field";
 import { Job, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
+import { BiEdit } from "react-icons/bi";
 
 interface DialogProps {
   jobIndex: number;
@@ -75,7 +76,10 @@ const EditDialog = ({ jobIndex }: DialogProps) => {
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
-        <Button colorPalette="teal">Edit</Button>
+        <Button colorPalette="cyan">
+          Edit
+          <BiEdit />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

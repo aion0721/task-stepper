@@ -3,14 +3,32 @@ import TaskSteps from "../TaskSteps";
 import EditDialog from "../EditDialog";
 import { useJobs } from "@/context/JobContext";
 import { JobStatus } from "@/types";
+import { Job } from "@/types";
+import { BiCaretRightCircle, BiCheckCircle } from "react-icons/bi";
 
 const TaskStepper = () => {
-  const { jobs } = useJobs();
+  const { jobs, setJobs } = useJobs();
 
   const statusColorMap: { [key in JobStatus]?: string } = {
     COMPELETED: "gray",
     IN_PROGRESS: "green",
     PENDING: "orange",
+  };
+
+  const handleClose = (jobIndex: number) => {
+    setJobs((prev) =>
+      prev.map((job: Job, index) =>
+        index === jobIndex ? { ...job, status: JobStatus.COMPLETED } : job
+      )
+    );
+  };
+
+  const handleReopen = (jobIndex: number) => {
+    setJobs((prev) =>
+      prev.map((job: Job, index) =>
+        index === jobIndex ? { ...job, status: JobStatus.IN_PROGRESS } : job
+      )
+    );
   };
 
   return (
@@ -24,6 +42,9 @@ const TaskStepper = () => {
             paddingX="10px"
             borderWidth="1px"
             borderColor="border.disabled"
+            bgColor={job.status === JobStatus.COMPLETED ? "gray" : ""}
+            transition="background-color 0.3s ease-in-out" // 背景色のトランジション
+            borderRadius=""
           >
             <HStack>
               <Box w="20%">
@@ -57,12 +78,25 @@ const TaskStepper = () => {
               <TaskSteps jobIndex={jobIndex} w="80%" />
               <Stack w="20%">
                 <EditDialog jobIndex={jobIndex} />
-                <Button
-                  colorPalette="red"
-                  disabled={job.steps !== job.tasks.length}
-                >
-                  Close
-                </Button>
+                {job.status === JobStatus.IN_PROGRESS ? (
+                  <Button
+                    colorPalette="green"
+                    onClick={() => handleClose(jobIndex)}
+                    disabled={job.steps !== job.tasks.length}
+                  >
+                    Close
+                    <BiCheckCircle />
+                  </Button>
+                ) : (
+                  <Button
+                    colorPalette="purple"
+                    onClick={() => handleReopen(jobIndex)}
+                    disabled={job.steps !== job.tasks.length}
+                  >
+                    ReOpen
+                    <BiCaretRightCircle />
+                  </Button>
+                )}
               </Stack>
             </HStack>
           </Box>

@@ -8,6 +8,7 @@ import {
 import { Button, Group, StepsChangeDetails } from "@chakra-ui/react";
 import { useJobs } from "@/context/JobContext";
 import { BiCaretLeft, BiCaretRight } from "react-icons/bi";
+import { JobStatus } from "@/types";
 
 interface TaskStepsProps {
   jobIndex: number; // ジョブのインデックス
@@ -40,18 +41,22 @@ const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
           <StepsItem key={task.id} index={taskIndex} title={task.name} />
         ))}
       </StepsList>
-      <Group w="100%">
-        <StepsPrevTrigger asChild>
-          <Button variant="outline" w="50%">
-            <BiCaretLeft />
-          </Button>
-        </StepsPrevTrigger>
-        <StepsNextTrigger asChild>
-          <Button variant="outline" w="50%">
-            <BiCaretRight />
-          </Button>
-        </StepsNextTrigger>
-      </Group>
+      {job.status !== JobStatus.COMPLETED ? (
+        <Group w="100%">
+          <StepsPrevTrigger asChild>
+            <Button variant="outline" w="50%">
+              <BiCaretLeft />
+            </Button>
+          </StepsPrevTrigger>
+          <StepsNextTrigger asChild>
+            <Button variant="outline" w="50%">
+              <BiCaretRight />
+            </Button>
+          </StepsNextTrigger>
+        </Group>
+      ) : (
+        ""
+      )}
     </StepsRoot>
   );
 };

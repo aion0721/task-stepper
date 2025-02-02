@@ -21,9 +21,7 @@ const Header: React.FC = () => {
     >
       {/* ロゴ部分 */}
       <Flex align="center" gap={2}>
-        <Icon fontSize="40px">
-          <GiStairsGoal />
-        </Icon>
+        <GiStairsGoal size="40px" />
         <Heading as="h1" size="lg">
           TaskStepper
         </Heading>
