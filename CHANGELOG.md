@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/aion0721/task-stepper/compare/v0.1.3...v0.1.4) (2025-02-02)
+
+
+### Features
+
+* add filter accordion ([f7c8237](https://github.com/aion0721/task-stepper/commit/f7c8237dd66e0520619516c32ce2a70986e89cd1))
+* add memo ([10df7d8](https://github.com/aion0721/task-stepper/commit/10df7d8c61d4bf30440fc01b88b8cd8d3800656e))
+* sort, filter, collaps ([07c9f9b](https://github.com/aion0721/task-stepper/commit/07c9f9b8dd23c23c96e50d4e43d7c9a322d6427b))
+
+
+### Bug Fixes
+
+* accordion ([e45da43](https://github.com/aion0721/task-stepper/commit/e45da4374c8e91d1017ee079bb717969681b6bee))
+* accordion spacer ([83e3bdd](https://github.com/aion0721/task-stepper/commit/83e3bdd0d6b5d2f8c47c87d7b0c182f07cc4f7bf))
+* animation ([f8bef7b](https://github.com/aion0721/task-stepper/commit/f8bef7b2c5d0b4b0c79b0aeb85eb5befb5d5871d))
+* delet unuse import ([8322792](https://github.com/aion0721/task-stepper/commit/83227925be0b089d42fbd850e3daaac36f840986))
+* show memo tooltip ([0009339](https://github.com/aion0721/task-stepper/commit/00093394a8a4e3efeb92e400add8d3af911bde8f))
+* sort bug fix ([6b9381d](https://github.com/aion0721/task-stepper/commit/6b9381da1718542ca0ae026ad69f6fb28d11b8e0))
+* update fix ([8779999](https://github.com/aion0721/task-stepper/commit/8779999a234a69dc923d9e7e125eec2e2c7ccddf))
+
 ### [0.1.3](https://github.com/aion0721/task-stepper/compare/v0.1.2...v0.1.3) (2025-02-02)
 
 
