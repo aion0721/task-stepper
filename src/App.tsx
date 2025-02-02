@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { Job } from "./types";
+import { Job, TaskTemplate } from "./types";
 import { Toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
 import { useJobs } from "./context/JobContext";
 import Header from "./components/layout/Header";
 import TaskStepper from "./components/layout/TaskStepper";
 import { Global } from "@emotion/react";
+import { useTaskTemplates } from "@/context/TaskTemplateContext";
 
 function App() {
   const { jobs, setJobs } = useJobs();
+  const { taskTemplates, setTaskTemplates } = useTaskTemplates();
   const [store, setStore] = useState<Store | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -37,6 +39,14 @@ function App() {
         if (storedJobs) {
           setJobs(storedJobs);
         }
+
+        // ストアからデータを取得
+        const storedTaskTemplates = await loadedStore.get<TaskTemplate[]>(
+          "taskTemplates"
+        );
+        if (storedTaskTemplates) {
+          setTaskTemplates(storedTaskTemplates);
+        }
       } catch (error) {
         console.error("ストアの初期化中にエラーが発生しました:", error);
       } finally {
@@ -53,6 +63,7 @@ function App() {
       const saveJobs = async () => {
         try {
           await store.set("jobs", jobs);
+          await store.set("taskTemplates", taskTemplates);
           await store.save();
         } catch (error) {
           console.error("データ保存中にエラーが発生しました:", error);
@@ -61,7 +72,7 @@ function App() {
 
       saveJobs();
     }
-  }, [jobs, store, isInitialized]);
+  }, [jobs, taskTemplates, store, isInitialized]);
 
   return (
     <>
