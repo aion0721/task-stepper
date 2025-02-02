@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { Job } from "./types";
-import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
-import NewDialog from "@/components/NewDialog";
-import EditDialog from "@/components/EditDialog";
-import TaskSteps from "./components/TaskSteps";
 import { useJobs } from "./context/JobContext";
 import Header from "./components/layout/Header";
 import TaskStepper from "./components/layout/TaskStepper";
@@ -57,9 +53,7 @@ function App() {
     <>
       <Toaster />
       <Header />
-      <Button onClick={() => console.log(jobs)}>show jobs</Button>
-      <NewDialog toaster={toaster} />
-      <TaskStepper toaster={toaster} />
+      <TaskStepper />
     </>
   );
 }

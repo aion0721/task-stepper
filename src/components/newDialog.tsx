@@ -1,11 +1,5 @@
 import { useRef, useState } from "react";
-import {
-  Button,
-  CreateToasterReturn,
-  Fieldset,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,

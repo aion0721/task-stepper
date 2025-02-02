@@ -1,24 +1,13 @@
-import {
-  Box,
-  Button,
-  CreateToasterReturn,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import TaskSteps from "../TaskSteps";
 import EditDialog from "../EditDialog";
 import { useJobs } from "@/context/JobContext";
 
-interface TaskStepperProps {
-  toaster: CreateToasterReturn;
-}
-
-const TaskStepper = ({ toaster }: TaskStepperProps) => {
+const TaskStepper = () => {
   const { jobs } = useJobs();
 
   return (
-    <Box mt="40px">
+    <Box mt="80px">
       {jobs.length > 0 ? (
         jobs.map((job, jobIndex) => (
           <Box
@@ -39,7 +28,7 @@ const TaskStepper = ({ toaster }: TaskStepperProps) => {
               </Box>
               <TaskSteps jobIndex={jobIndex} />
               <Stack>
-                <EditDialog toaster={toaster} jobIndex={jobIndex} />
+                <EditDialog jobIndex={jobIndex} />
                 <Button
                   colorPalette="red"
                   disabled={job.steps !== job.tasks.length}

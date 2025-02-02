@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  CreateToasterReturn,
-  Fieldset,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -20,13 +14,13 @@ import {
 import { Field } from "./ui/field";
 import { Job, Task, TaskStatus } from "@/types";
 import { useJobs } from "@/context/JobContext";
+import { toaster } from "@/components/ui/toaster";
 
 interface DialogProps {
-  toaster: CreateToasterReturn;
   jobIndex: number;
 }
 
-const EditDialog = ({ toaster, jobIndex }: DialogProps) => {
+const EditDialog = ({ jobIndex }: DialogProps) => {
   const { jobs, setJobs } = useJobs();
   const [targetJob, setTargetJob] = useState<Job>(jobs[jobIndex]);
   const [open, setOpen] = useState<boolean>(false);
