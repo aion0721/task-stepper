@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Field } from "./ui/field";
-import { NewJob, Job, TaskStatus } from "@/types";
+import { NewJob, Job } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 import { BiAddToQueue } from "react-icons/bi";
@@ -39,7 +39,6 @@ const NewDialog = () => {
         id: crypto.randomUUID(),
         createdAt: now,
         updatedAt: now,
-        status: task.status || TaskStatus.NOT_STARTED,
       })),
       createdAt: now,
       updatedAt: now,
@@ -53,7 +52,7 @@ const NewDialog = () => {
       name: jobNameRef.current.value, // ジョブ名
       dueDate: jobDate ? new Date(jobDate) : new Date(), // 期日
       tasks: [
-        { name: firstTaskRef.current.value, status: TaskStatus.NOT_STARTED }, // タスク1
+        { name: firstTaskRef.current.value }, // タスク1
       ],
       steps: 0,
     };

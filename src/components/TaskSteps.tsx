@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/steps";
 import { Button, Group, StepsChangeDetails } from "@chakra-ui/react";
 import { useJobs } from "@/context/JobContext";
+import { BiCaretLeft, BiCaretRight } from "react-icons/bi";
 
 interface TaskStepsProps {
   jobIndex: number; // ジョブのインデックス
@@ -62,12 +63,12 @@ const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
       <Group w="100%">
         <StepsPrevTrigger asChild>
           <Button variant="outline" w="50%">
-            Prev
+            <BiCaretLeft />
           </Button>
         </StepsPrevTrigger>
         <StepsNextTrigger asChild>
           <Button variant="outline" w="50%">
-            Next
+            <BiCaretRight />
           </Button>
         </StepsNextTrigger>
       </Group>

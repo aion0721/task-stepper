@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Field } from "./ui/field";
-import { Job, Task, TaskStatus } from "@/types";
+import { Job, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 
@@ -45,7 +45,6 @@ const EditDialog = ({ jobIndex }: DialogProps) => {
     const newTask = {
       id: crypto.randomUUID(),
       name: "New Task",
-      status: TaskStatus.NOT_STARTED,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
