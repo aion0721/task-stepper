@@ -98,7 +98,7 @@ const EditDialog = ({ job }: DialogProps) => {
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
-        <Button colorPalette="cyan">
+        <Button colorPalette="cyan" flex="1">
           Edit
           <BiEdit />
         </Button>

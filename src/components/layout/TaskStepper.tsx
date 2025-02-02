@@ -1,22 +1,16 @@
 import {
   Box,
-  Button,
   ColorSwatch,
-  DataList,
-  HStack,
   Input,
   Presence,
   Spacer,
-  Stack,
   Status,
 } from "@chakra-ui/react";
 import TaskSteps from "../TaskSteps";
-import EditDialog from "../EditDialog";
 import { useJobs } from "@/context/JobContext";
 import { useAccordion } from "@/context/AccordionContext";
 import { JobStatus } from "@/types";
-import { Job } from "@/types";
-import { BiCaretRightCircle, BiCheckCircle, BiNote } from "react-icons/bi";
+import { BiNote } from "react-icons/bi";
 import {
   AccordionItem,
   AccordionItemContent,
@@ -27,7 +21,7 @@ import { useFilter } from "@/context/FilterContext";
 import { Tooltip } from "../ui/tooltip";
 
 const TaskStepper = () => {
-  const { jobs, setJobs } = useJobs();
+  const { jobs } = useJobs();
   const { accordion, setAccordion } = useAccordion();
   const { setFilterText, filterText, filterStatus, sortOrder } = useFilter();
 
@@ -37,21 +31,6 @@ const TaskStepper = () => {
     PENDING: "orange",
   };
 
-  const handleClose = (jobid: string) => {
-    setJobs((prev) =>
-      prev.map((job: Job) =>
-        job.id === jobid ? { ...job, status: JobStatus.COMPLETED } : job
-      )
-    );
-  };
-
-  const handleReopen = (jobid: string) => {
-    setJobs((prev) =>
-      prev.map((job: Job) =>
-        job.id === jobid ? { ...job, status: JobStatus.IN_PROGRESS } : job
-      )
-    );
-  };
   // フィルタリングされたジョブリスト
   const filteredJobs = jobs.sort((a, b) => {
     const dateA = new Date(a.createdAt).getTime();
@@ -123,60 +102,7 @@ const TaskStepper = () => {
                     borderRadius=""
                     bg="white"
                   >
-                    <HStack>
-                      <Box w="20%">
-                        <DataList.Root gap="1" size="sm">
-                          <DataList.Item>
-                            <DataList.ItemLabel>Status</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                              <Status.Root
-                                size="sm"
-                                colorPalette={
-                                  statusColorMap[job?.status as JobStatus] ||
-                                  "red"
-                                }
-                              >
-                                <Status.Indicator />
-                                {job?.status}
-                              </Status.Root>
-                            </DataList.ItemValue>
-                          </DataList.Item>
-                          <DataList.Item>
-                            <DataList.ItemLabel>Name</DataList.ItemLabel>
-                            <DataList.ItemValue>{job?.name}</DataList.ItemValue>
-                          </DataList.Item>
-                          <DataList.Item>
-                            <DataList.ItemLabel>Date</DataList.ItemLabel>
-                            <DataList.ItemValue>
-                              {new Date(job.dueDate).toLocaleDateString()}
-                            </DataList.ItemValue>
-                          </DataList.Item>
-                        </DataList.Root>
-                      </Box>
-                      <TaskSteps job={job} w="80%" />
-                      <Stack w="20%">
-                        <EditDialog job={job} />
-                        {job.status === JobStatus.IN_PROGRESS ? (
-                          <Button
-                            colorPalette="green"
-                            onClick={() => handleClose(job.id)}
-                            disabled={job.steps !== job.tasks.length}
-                          >
-                            Close
-                            <BiCheckCircle />
-                          </Button>
-                        ) : (
-                          <Button
-                            colorPalette="purple"
-                            onClick={() => handleReopen(job.id)}
-                            disabled={job.steps !== job.tasks.length}
-                          >
-                            ReOpen
-                            <BiCaretRightCircle />
-                          </Button>
-                        )}
-                      </Stack>
-                    </HStack>
+                    <TaskSteps job={job} />
                   </Box>
                 </AccordionItemContent>
               </AccordionItem>
