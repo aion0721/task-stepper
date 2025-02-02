@@ -15,7 +15,7 @@ import { Field } from "./ui/field";
 import { Job, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
-import { BiEdit, BiMessageAdd, BiTrash } from "react-icons/bi";
+import { BiEdit, BiMessageAdd, BiSolidTrash, BiTrash } from "react-icons/bi";
 
 interface DialogProps {
   job: Job;
@@ -76,6 +76,10 @@ const EditDialog = ({ job }: DialogProps) => {
 
     // targetJobの状態を更新
     setTargetJob({ ...targetJob, tasks: updatedTasks });
+  };
+
+  const handleJobDelete = () => {
+    setJobs((prev: Job[]) => prev.filter((job) => job.id !== targetJob.id));
   };
 
   useEffect(() => {
@@ -152,6 +156,11 @@ const EditDialog = ({ job }: DialogProps) => {
                 ))}
               </Field>
               <Field label="step">{targetJob.steps}</Field>
+            </Fieldset.Content>
+            <Fieldset.Content>
+              <Button colorPalette="red" onClick={handleJobDelete}>
+                Delete <BiSolidTrash />
+              </Button>
             </Fieldset.Content>
           </Fieldset.Root>
         </DialogBody>
