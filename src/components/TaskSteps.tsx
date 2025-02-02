@@ -10,9 +10,10 @@ import { useJobs } from "@/context/JobContext";
 
 interface TaskStepsProps {
   jobIndex: number; // ジョブのインデックス
+  w: string;
 }
 
-const TaskSteps = ({ jobIndex }: TaskStepsProps) => {
+const TaskSteps = ({ jobIndex, w }: TaskStepsProps) => {
   const { jobs, setJobs } = useJobs();
   const job = jobs[jobIndex];
   const hashToRange = (input: string, range: number): number => {
@@ -46,6 +47,7 @@ const TaskSteps = ({ jobIndex }: TaskStepsProps) => {
   return (
     <StepsRoot
       m="10px"
+      w={w}
       defaultStep={job.steps}
       count={job.tasks.length}
       step={job.steps}

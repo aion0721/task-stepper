@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, DataList, HStack, Stack, Text } from "@chakra-ui/react";
 import TaskSteps from "../TaskSteps";
 import EditDialog from "../EditDialog";
 import { useJobs } from "@/context/JobContext";
@@ -18,16 +18,22 @@ const TaskStepper = () => {
             borderColor="border.disabled"
           >
             <HStack>
-              <Box w="200px">
-                <Text>Job Name: {job?.name}</Text>
-                {job?.dueDate && (
-                  <Text>
-                    Due Date: {new Date(job.dueDate).toLocaleDateString()}
-                  </Text>
-                )}
+              <Box w="20%">
+                <DataList.Root gap="1">
+                  <DataList.Item>
+                    <DataList.ItemLabel>Name</DataList.ItemLabel>
+                    <DataList.ItemValue>{job?.name}</DataList.ItemValue>
+                  </DataList.Item>
+                  <DataList.Item>
+                    <DataList.ItemLabel>Date</DataList.ItemLabel>
+                    <DataList.ItemValue>
+                      {new Date(job.dueDate).toLocaleDateString()}
+                    </DataList.ItemValue>
+                  </DataList.Item>
+                </DataList.Root>
               </Box>
-              <TaskSteps jobIndex={jobIndex} />
-              <Stack>
+              <TaskSteps jobIndex={jobIndex} w="80%" />
+              <Stack w="20%">
                 <EditDialog jobIndex={jobIndex} />
                 <Button
                   colorPalette="red"

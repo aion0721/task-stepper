@@ -1,6 +1,7 @@
 import React from "react";
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Icon } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
+import { GiStairsGoal } from "react-icons/gi";
 
 const Header: React.FC = () => {
   return (
@@ -19,9 +20,14 @@ const Header: React.FC = () => {
       height="60px"
     >
       {/* ロゴ部分 */}
-      <Heading as="h1" size="lg">
-        MyApp
-      </Heading>
+      <Flex align="center" gap={2}>
+        <Icon fontSize="40px">
+          <GiStairsGoal />
+        </Icon>
+        <Heading as="h1" size="lg">
+          TaskStepper
+        </Heading>
+      </Flex>
 
       {/* ボタン */}
       <NewDialog />
