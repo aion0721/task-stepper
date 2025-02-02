@@ -3,10 +3,10 @@ import { Job, TaskTemplate } from "./types";
 import { Toaster } from "@/components/ui/toaster";
 import { Store } from "@tauri-apps/plugin-store";
 import { useJobs } from "./context/JobContext";
-import Header from "./components/layout/Header";
-import TaskStepper from "./components/layout/TaskStepper";
 import { Global } from "@emotion/react";
 import { useTaskTemplates } from "@/context/TaskTemplateContext";
+import { RouterProvider } from "@tanstack/react-router";
+import { router } from "./components/utils/Routing";
 
 function App() {
   const { jobs, setJobs } = useJobs();
@@ -41,9 +41,8 @@ function App() {
         }
 
         // ストアからデータを取得
-        const storedTaskTemplates = await loadedStore.get<TaskTemplate[]>(
-          "taskTemplates"
-        );
+        const storedTaskTemplates =
+          await loadedStore.get<TaskTemplate[]>("taskTemplates");
         if (storedTaskTemplates) {
           setTaskTemplates(storedTaskTemplates);
         }
@@ -78,8 +77,7 @@ function App() {
     <>
       <GlobalStyles />
       <Toaster />
-      <Header />
-      <TaskStepper />
+      <RouterProvider router={router} />
     </>
   );
 }

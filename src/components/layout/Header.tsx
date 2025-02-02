@@ -3,6 +3,9 @@ import { Flex, Heading, HStack } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
 import FilterDrawer from "../FilterDrawer";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import { router } from "@/components/utils/Routing";
+import { Link as RouterLink } from "@tanstack/react-router";
 
 const Header: React.FC = () => {
   return (
@@ -27,7 +30,14 @@ const Header: React.FC = () => {
           TaskStepper
         </Heading>
       </Flex>
-
+      <Flex gap="4">
+        <ChakraLink asChild>
+          <RouterLink to="/">Home</RouterLink>
+        </ChakraLink>
+        <ChakraLink asChild>
+          <RouterLink to="/template">Template</RouterLink>
+        </ChakraLink>
+      </Flex>
       <HStack>
         {/* ボタン */}
         <NewDialog />
