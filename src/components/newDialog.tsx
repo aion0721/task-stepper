@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   createListCollection,
@@ -34,6 +34,12 @@ import {
   SelectValueText,
 } from "./ui/select";
 import { useTaskTemplates } from "@/context/TaskTemplateContext";
+import {
+  isRegistered,
+  register,
+  unregister,
+} from "@tauri-apps/plugin-global-shortcut";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 const NewDialog = () => {
   const { setJobs } = useJobs();
@@ -101,6 +107,40 @@ const NewDialog = () => {
       value: template.id,
     })),
   });
+  async function setupShortcut(shortcut: string, handler: () => void) {
+    try {
+      const alreadyRegistered = await isRegistered(shortcut);
+      if (alreadyRegistered) {
+        console.warn(
+          `Shortcut "${shortcut}" is already registered. Unregistering it first.`
+        );
+        await unregister(shortcut); // 必要に応じて既存のショートカットを解除
+      }
+      await register(shortcut, handler);
+      console.log(`Shortcut "${shortcut}" registered successfully.`);
+    } catch (error) {
+      console.error(`Failed to register shortcut "${shortcut}":`, error);
+    }
+  }
+
+  useEffect(() => {
+    // 非同期処理を行うために内部で関数を定義
+    const initializeShortcut = async () => {
+      await setupShortcut("Ctrl+Shift+C", async () => {
+        setOpen(true); // 状態を更新
+        await getCurrentWindow().setFocus();
+      });
+    };
+
+    initializeShortcut();
+
+    // クリーンアップ処理（ショートカット解除）
+    return () => {
+      unregister("Ctrl+Shift+C").catch((error) =>
+        console.error("Failed to unregister shortcut:", error)
+      );
+    };
+  }, [setOpen]); // Reactルールに従い依存配列にsetOpenを追加
 
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
