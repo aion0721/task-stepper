@@ -5,6 +5,7 @@ import {
   Fieldset,
   HStack,
   Input,
+  Kbd,
   Stack,
   Textarea,
 } from "@chakra-ui/react";
@@ -152,7 +153,9 @@ const NewDialog = () => {
       </DialogTrigger>
       <DialogContent ref={contentRef}>
         <DialogHeader>
-          <DialogTitle>Add Job</DialogTitle>
+          <DialogTitle>
+            Add Job <Kbd>Ctrl</Kbd>+<Kbd>Shift</Kbd>+<Kbd>C</Kbd>
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Fieldset.Root>
