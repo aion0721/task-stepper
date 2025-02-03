@@ -5,6 +5,7 @@ import { GiStairsGoal } from "react-icons/gi";
 import FilterDrawer from "../FilterDrawer";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "@tanstack/react-router";
+import { ColorModeButton } from "../ui/color-mode";
 
 const Header: React.FC = () => {
   return (
@@ -41,6 +42,7 @@ const Header: React.FC = () => {
         {/* ボタン */}
         <NewDialog />
         <FilterDrawer />
+        <ColorModeButton />
       </HStack>
     </Flex>
   );

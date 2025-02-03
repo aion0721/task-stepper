@@ -68,9 +68,12 @@ const TaskStepper = () => {
               <AccordionItem
                 key={job.id}
                 value={job.id}
-                bgColor={
-                  job.status === JobStatus.IN_PROGRESS ? "green.100" : "gray"
-                }
+                bg={{
+                  base:
+                    job.status === JobStatus.IN_PROGRESS ? "green.100" : "gray", // ライトモード
+                  _dark:
+                    job.status === JobStatus.IN_PROGRESS ? "green" : "gray.600", // ダークモード
+                }}
                 transition="background-color 0.3s ease-in-out" // 背景色のトランジション
               >
                 <Box position="relative">
@@ -81,8 +84,8 @@ const TaskStepper = () => {
                       }
                     >
                       <Status.Indicator />
-                      {job?.status}
                     </Status.Root>
+                    {job?.status}
                     <ColorSwatch value={job.color} />
                     {job.name}
                     <Spacer />
@@ -99,8 +102,11 @@ const TaskStepper = () => {
                     paddingX="10px"
                     borderWidth="1px"
                     borderColor="border.disabled"
+                    bg={{
+                      base: "white",
+                      _dark: "gray",
+                    }}
                     borderRadius=""
-                    bg="white"
                   >
                     <TaskSteps job={job} />
                   </Box>
