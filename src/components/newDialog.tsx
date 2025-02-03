@@ -29,7 +29,6 @@ import { Radio, RadioGroup } from "./ui/radio";
 import {
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,

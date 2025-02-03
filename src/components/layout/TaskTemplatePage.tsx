@@ -7,6 +7,7 @@ import {
   Heading,
   Input,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
@@ -20,8 +21,9 @@ import {
 import { useState } from "react";
 import { Field } from "../ui/field";
 import { Task, TaskTemplate } from "@/types";
-import { BiMessageAdd, BiTrash } from "react-icons/bi";
+import { BiBookAdd, BiMessageAdd, BiTrash } from "react-icons/bi";
 import { toaster } from "../ui/toaster";
+import EditDialog from "@/components/TaskTemplateEditDialog";
 
 const TaskTemplatePage = () => {
   const { taskTemplates, setTaskTemplates } = useTaskTemplates();
@@ -100,8 +102,9 @@ const TaskTemplatePage = () => {
         <Heading>Template</Heading>
         <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
           <DialogTrigger asChild>
-            <Button colorPalette="teal" variant="surface">
+            <Button colorPalette="teal" variant="surface" w="100%">
               AddTemplate
+              <BiBookAdd />
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -161,13 +164,32 @@ const TaskTemplatePage = () => {
             <DialogCloseTrigger />
           </DialogContent>
         </DialogRoot>
-        {taskTemplates.length > 0
-          ? taskTemplates.map((taskTemplate) => (
-              <>
-                <Button>{taskTemplate.name}</Button>
-              </>
+        <Box w="100%" p={4}>
+          {taskTemplates.length > 0 ? (
+            taskTemplates.map((taskTemplate) => (
+              <Flex
+                key={taskTemplate.id}
+                alignItems="center"
+                justifyContent="space-between"
+                p={2}
+                borderBottom="1px solid"
+                borderColor="gray.200"
+              >
+                {/* タイトル */}
+                <Text fontWeight="bold" fontSize="md">
+                  {taskTemplate.name}
+                </Text>
+
+                {/* 編集ボタン */}
+                <EditDialog taskTemplate={taskTemplate} />
+              </Flex>
             ))
-          : "no templates"}
+          ) : (
+            <Text textAlign="center" color="gray.500">
+              no templates
+            </Text>
+          )}
+        </Box>
       </Box>
     </>
   );
