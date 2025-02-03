@@ -49,9 +49,6 @@ const NewDialog = () => {
     value: "",
   } as HTMLInputElement);
   const jobDateRef = useRef<HTMLInputElement>(null);
-  const firstTaskRef = useRef<HTMLInputElement>({
-    value: "",
-  } as HTMLInputElement);
   const memoRef = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<JobColor>(JobColor.Orange);
@@ -173,15 +170,11 @@ const NewDialog = () => {
                 <Input type="date" ref={jobDateRef} />
               </Field>
               <Field label="TaskTemplate">
-                <Button onClick={() => console.log(taskTemplateValue)}>
-                  aaa
-                </Button>
                 <SelectRoot
                   collection={selectTaskTemplate}
                   value={taskTemplateValue}
                   onValueChange={(e) => setTaskTemplateValue(e.value)}
                 >
-                  <SelectLabel>Select framework</SelectLabel>
                   <SelectTrigger>
                     <SelectValueText placeholder="Select Template" />
                   </SelectTrigger>
@@ -193,9 +186,6 @@ const NewDialog = () => {
                     ))}
                   </SelectContent>
                 </SelectRoot>
-              </Field>
-              <Field label="最初のタスク">
-                <Input placeholder="見積書を作る" ref={firstTaskRef} />
               </Field>
               <Field label="色選択">
                 <RadioGroup
