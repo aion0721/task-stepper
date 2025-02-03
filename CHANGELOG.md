@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/aion0721/task-stepper/compare/v0.1.4...v0.1.5) (2025-02-03)
+
+
+### Features
+
+* add task template ([6f11e14](https://github.com/aion0721/task-stepper/commit/6f11e141a57f101fe889607fffc95d5dc6434d73))
+* add tasktemplate ([4659bf9](https://github.com/aion0721/task-stepper/commit/4659bf94e896d5559887aa690098bb49e48c5ed7))
+* add TaskTemplate context ([d3f84d2](https://github.com/aion0721/task-stepper/commit/d3f84d2dc6d739735fb70e1b3a7b88c6996ea3bc))
+
+
+### Bug Fixes
+
+* add template page ([4ae78e5](https://github.com/aion0721/task-stepper/commit/4ae78e52b64fa216954f6ca4a3949fe0dcf87149))
+* delete datalist ([b68b291](https://github.com/aion0721/task-stepper/commit/b68b291a72c4127b23cebe29f6e96dd091879bec))
+* remove task createdAt, updatedAt ([0b73f3b](https://github.com/aion0721/task-stepper/commit/0b73f3b90c1c7a363f9f97f358902cf20049570a))
+
 ### [0.1.4](https://github.com/aion0721/task-stepper/compare/v0.1.3...v0.1.4) (2025-02-02)
 
 
