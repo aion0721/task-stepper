@@ -89,6 +89,11 @@ const TaskStepper = () => {
                     <ColorSwatch value={job.color} />
                     {job.name}
                     <Spacer />
+                    {job.tasks &&
+                    job.tasks[job.steps] &&
+                    job.tasks[job.steps].name
+                      ? `Next:${job.tasks[job.steps].name},`
+                      : ""}
                     {new Date(job.createdAt).toLocaleDateString()}
                     <Tooltip content={job.memo}>
                       <BiNote />
