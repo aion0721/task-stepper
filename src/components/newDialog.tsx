@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import {
   Button,
+  createListCollection,
   Fieldset,
   HStack,
   Input,
@@ -19,14 +20,24 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Field } from "./ui/field";
-import { NewJob, Job, JobStatus, JobColor } from "@/types";
+import { NewJob, Job, JobStatus, JobColor, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 import { BiAddToQueue } from "react-icons/bi";
 import { Radio, RadioGroup } from "./ui/radio";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "./ui/select";
+import { useTaskTemplates } from "@/context/TaskTemplateContext";
 
 const NewDialog = () => {
   const { setJobs } = useJobs();
+  const { taskTemplates } = useTaskTemplates();
   const jobNameRef = useRef<HTMLInputElement>({
     value: "",
   } as HTMLInputElement);
@@ -37,6 +48,8 @@ const NewDialog = () => {
   const memoRef = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<JobColor>(JobColor.Orange);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [taskTemplateValue, setTaskTemplateValue] = useState<string[]>([]);
 
   const jobColors = Object.values(JobColor);
 
@@ -57,6 +70,10 @@ const NewDialog = () => {
 
   // 新しいジョブを作成して状態にセット
   const addJob = () => {
+    const targetTaskTemplate: Task[] =
+      taskTemplates.find((template) => template.id === taskTemplateValue[0])
+        ?.tasks || [];
+    console.log(targetTaskTemplate);
     const jobDate = jobDateRef.current?.value;
     const newJobData: NewJob = {
       name: jobNameRef.current.value, // ジョブ名
@@ -64,9 +81,7 @@ const NewDialog = () => {
       status: JobStatus.IN_PROGRESS,
       color: color,
       memo: memoRef.current?.value || "",
-      tasks: [
-        { name: firstTaskRef.current.value }, // タスク1
-      ],
+      tasks: targetTaskTemplate,
       steps: 0,
     };
 
@@ -80,6 +95,13 @@ const NewDialog = () => {
     });
   };
 
+  const selectTaskTemplate = createListCollection({
+    items: taskTemplates.map((template) => ({
+      label: template.name,
+      value: template.id,
+    })),
+  });
+
   return (
     <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
@@ -88,7 +110,7 @@ const NewDialog = () => {
           <BiAddToQueue />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent ref={contentRef}>
         <DialogHeader>
           <DialogTitle>Add Job</DialogTitle>
         </DialogHeader>
@@ -106,6 +128,28 @@ const NewDialog = () => {
               </Field>
               <Field label="対応期日">
                 <Input type="date" ref={jobDateRef} />
+              </Field>
+              <Field label="TaskTemplate">
+                <Button onClick={() => console.log(taskTemplateValue)}>
+                  aaa
+                </Button>
+                <SelectRoot
+                  collection={selectTaskTemplate}
+                  value={taskTemplateValue}
+                  onValueChange={(e) => setTaskTemplateValue(e.value)}
+                >
+                  <SelectLabel>Select framework</SelectLabel>
+                  <SelectTrigger>
+                    <SelectValueText placeholder="Select Template" />
+                  </SelectTrigger>
+                  <SelectContent portalRef={contentRef}>
+                    {selectTaskTemplate.items.map((taskTemplate) => (
+                      <SelectItem item={taskTemplate} key={taskTemplate.value}>
+                        {taskTemplate.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
               </Field>
               <Field label="最初のタスク">
                 <Input placeholder="見積書を作る" ref={firstTaskRef} />

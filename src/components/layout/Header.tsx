@@ -4,7 +4,6 @@ import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
 import FilterDrawer from "../FilterDrawer";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import { router } from "@/components/utils/Routing";
 import { Link as RouterLink } from "@tanstack/react-router";
 
 const Header: React.FC = () => {
