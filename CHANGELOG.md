@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/aion0721/task-stepper/compare/v0.1.5...v0.1.6) (2025-02-03)
+
+
+### Features
+
+* new job shortcut ([6c18b4f](https://github.com/aion0721/task-stepper/commit/6c18b4f0106250bb7ed0e863b3a5842149bb4097))
+* tasktemplate edit dialog ([fea91e8](https://github.com/aion0721/task-stepper/commit/fea91e80132e6dfe45deabdf8f1cdebab79952c2))
+
+
+### Bug Fixes
+
+* add job shortcut ([b96cac2](https://github.com/aion0721/task-stepper/commit/b96cac22a48e7f92a2a24a5ed0885409eda0b162))
+* dark theme ([ef788f0](https://github.com/aion0721/task-stepper/commit/ef788f067adc27ab7da2a9cc4090cecbd9d2aba4))
+* delete first task ([581ca12](https://github.com/aion0721/task-stepper/commit/581ca126b1afd42cf8e8a7b947a81617140c62c4))
+* show next step ([75c8585](https://github.com/aion0721/task-stepper/commit/75c8585437a1466bf412114d9334a905fd9f7fe0))
+
 ### [0.1.5](https://github.com/aion0721/task-stepper/compare/v0.1.4...v0.1.5) (2025-02-03)
 
 
