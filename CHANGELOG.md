@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/aion0721/task-stepper/compare/v0.1.6...v0.1.7) (2025-02-05)
+
+
+### Bug Fixes
+
+* add tasktemplate clear ([53fd588](https://github.com/aion0721/task-stepper/commit/53fd5882a3b4240b41615eaa12012f64db6e5304))
+* hidden status ([a1f3296](https://github.com/aion0721/task-stepper/commit/a1f3296e5f55500ce3d50f6c97d348cf9f65013a))
+* show memo ([0e43c61](https://github.com/aion0721/task-stepper/commit/0e43c6107ea9fd6221e929be892f22746328c189))
+
 ### [0.1.6](https://github.com/aion0721/task-stepper/compare/v0.1.5...v0.1.6) (2025-02-03)
 
 
