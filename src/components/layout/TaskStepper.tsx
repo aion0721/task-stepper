@@ -85,7 +85,6 @@ const TaskStepper = () => {
                     >
                       <Status.Indicator />
                     </Status.Root>
-                    {job?.status}
                     <ColorSwatch value={job.color} />
                     {job.name}
                     <Spacer />
