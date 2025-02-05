@@ -1,5 +1,6 @@
 import {
   Box,
+  Card,
   ColorSwatch,
   Input,
   Presence,
@@ -39,8 +40,9 @@ const TaskStepper = () => {
   });
 
   return (
-    <Box mt="80px" height="calc(100vh - 80px)" as="main" px="20px">
+    <Box mt="60px" height="calc(100vh - 80px)" as="main" px="20px">
       <Input
+        my="10px"
         placeholder="ジョブ名でフィルター"
         value={filterText}
         onChange={(e) => setFilterText(e.target.value)} // フィルタ条件を更新
@@ -113,6 +115,15 @@ const TaskStepper = () => {
                     borderRadius=""
                   >
                     <TaskSteps job={job} />
+                    {job.memo && job.memo.length > 0 && (
+                      <Card.Root m="10px">
+                        <Card.Body
+                          style={{ whiteSpace: "pre-wrap", lineHeight: "1.0" }}
+                        >
+                          {job.memo}
+                        </Card.Body>
+                      </Card.Root>
+                    )}
                   </Box>
                 </AccordionItemContent>
               </AccordionItem>
