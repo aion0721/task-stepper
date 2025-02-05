@@ -24,7 +24,7 @@ import { Field } from "./ui/field";
 import { NewJob, Job, JobStatus, JobColor, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
-import { BiAddToQueue } from "react-icons/bi";
+import { BiAddToQueue, BiEraser } from "react-icons/bi";
 import { Radio, RadioGroup } from "./ui/radio";
 import {
   SelectContent,
@@ -168,14 +168,14 @@ const NewDialog = () => {
               <Field label="対応期日">
                 <Input type="date" ref={jobDateRef} />
               </Field>
-              <Field label="TaskTemplate">
+              <Field label="タスクテンプレート(利用ない場合は「未選択」)">
                 <SelectRoot
                   collection={selectTaskTemplate}
                   value={taskTemplateValue}
                   onValueChange={(e) => setTaskTemplateValue(e.value)}
                 >
                   <SelectTrigger>
-                    <SelectValueText placeholder="Select Template" />
+                    <SelectValueText placeholder="未選択" />
                   </SelectTrigger>
                   <SelectContent portalRef={contentRef}>
                     {selectTaskTemplate.items.map((taskTemplate) => (
@@ -185,6 +185,15 @@ const NewDialog = () => {
                     ))}
                   </SelectContent>
                 </SelectRoot>
+                <Button
+                  w="100%"
+                  colorPalette="gray"
+                  variant="subtle"
+                  onClick={() => setTaskTemplateValue([])}
+                >
+                  タスクテンプレートをクリア
+                  <BiEraser />
+                </Button>
               </Field>
               <Field label="色選択">
                 <RadioGroup
