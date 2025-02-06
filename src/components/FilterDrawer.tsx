@@ -23,8 +23,13 @@ const FilterDrawer = () => {
     .filter((job) => job.status === "IN_PROGRESS") // IN_PROGRESSのジョブをフィルタリング
     .map((job) => job.id); // IDのみ抽出
 
-  const { filterText, setFilterText, setFilterStatus, setSortOrder } =
-    useFilter();
+  const {
+    filterText,
+    setFilterText,
+    setFilterStatus,
+    setSortOrder,
+    sortOrder,
+  } = useFilter();
 
   return (
     <DrawerRoot>
@@ -68,10 +73,11 @@ const FilterDrawer = () => {
           </Stack>
           <Stack>
             <Center>
-              <Heading>Sort</Heading>
+              <Heading>Sort:{sortOrder}</Heading>
             </Center>
             <Button onClick={() => setSortOrder("asc")}>古いもの順</Button>
             <Button onClick={() => setSortOrder("desc")}>新しいもの順</Button>
+            <Button onClick={() => setSortOrder(null)}>解除</Button>
           </Stack>
           <Stack>
             <Center>

@@ -79,7 +79,6 @@ const NewDialog = () => {
     const targetTaskTemplate: Task[] =
       taskTemplates.find((template) => template.id === taskTemplateValue[0])
         ?.tasks || [];
-    console.log(targetTaskTemplate);
     const jobDate = jobDateRef.current?.value;
     const newJobData: NewJob = {
       name: jobNameRef.current.value, // ジョブ名

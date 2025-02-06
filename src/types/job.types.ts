@@ -25,6 +25,7 @@ export interface Job {
   memo: string;
   createdAt: Date;
   updatedAt: Date;
+  links: string;
 }
 
 export type NewJob = Omit<Job, "id" | "createdAt" | "updatedAt" | "tasks"> & {

@@ -8,9 +8,11 @@ import {
 import { Button, HStack, StepsChangeDetails } from "@chakra-ui/react";
 import { useJobs } from "@/context/JobContext";
 import {
+  BiCaretDownCircle,
   BiCaretLeft,
   BiCaretRight,
   BiCaretRightCircle,
+  BiCaretUpCircle,
   BiCheckCircle,
 } from "react-icons/bi";
 import { Job, JobStatus } from "@/types";
@@ -22,6 +24,35 @@ interface TaskStepsProps {
 
 const TaskSteps = ({ job }: TaskStepsProps) => {
   const { setJobs } = useJobs();
+
+  // ジョブIDを使って処理を実行
+  const handleMoveUp = () => {
+    setJobs((prevJobs) => {
+      const jobIndex = prevJobs.findIndex((j) => j.id === job.id); // IDで検索
+      if (jobIndex > 0) {
+        // 順番を入れ替える
+        const updatedJobs = [...prevJobs];
+        const [movedJob] = updatedJobs.splice(jobIndex, 1);
+        updatedJobs.splice(jobIndex - 1, 0, movedJob);
+        return updatedJobs;
+      }
+      return prevJobs; // 入れ替えが不要な場合はそのまま返す
+    });
+  };
+  // ジョブを下に移動
+  const handleMoveDown = () => {
+    setJobs((prevJobs) => {
+      const jobIndex = prevJobs.findIndex((j) => j.id === job.id); // IDで検索
+      if (jobIndex < prevJobs.length - 1) {
+        // 順番を入れ替える
+        const updatedJobs = [...prevJobs];
+        const [movedJob] = updatedJobs.splice(jobIndex, 1);
+        updatedJobs.splice(jobIndex + 1, 0, movedJob);
+        return updatedJobs;
+      }
+      return prevJobs; // 入れ替えが不要な場合はそのまま返す
+    });
+  };
 
   const handleStepChange = (e: StepsChangeDetails) => {
     const now = new Date();
@@ -100,6 +131,12 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
             <BiCaretRightCircle />
           </Button>
         )}
+        <Button onClick={handleMoveUp}>
+          <BiCaretUpCircle />
+        </Button>
+        <Button onClick={handleMoveDown}>
+          <BiCaretDownCircle />
+        </Button>
       </HStack>
     </StepsRoot>
   );

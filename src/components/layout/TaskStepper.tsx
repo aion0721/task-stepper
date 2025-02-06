@@ -21,6 +21,7 @@ import {
 } from "../ui/accordion";
 import { useFilter } from "@/context/FilterContext";
 import { Tooltip } from "../ui/tooltip";
+import { useMemo } from "react";
 
 const TaskStepper = () => {
   const { jobs } = useJobs();
@@ -34,11 +35,19 @@ const TaskStepper = () => {
   };
 
   // フィルタリングされたジョブリスト
-  const filteredJobs = jobs.sort((a, b) => {
-    const dateA = new Date(a.createdAt).getTime();
-    const dateB = new Date(b.createdAt).getTime();
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA; // ソート処理
-  });
+  const filteredJobs = useMemo(() => {
+    if (sortOrder === null) {
+      // sortOrderがnullの場合はソートせずそのまま返す
+      return jobs;
+    }
+
+    // sortOrderが"asc"または"desc"の場合にソート
+    return [...jobs].sort((a, b) => {
+      const dateA = new Date(a.dueDate).getTime();
+      const dateB = new Date(b.dueDate).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+  }, [jobs, sortOrder]);
 
   return (
     <Box mt="60px" height="calc(100vh - 80px)" as="main" px="20px">
@@ -96,7 +105,7 @@ const TaskStepper = () => {
                     job.tasks[job.steps].name
                       ? `Next:${job.tasks[job.steps].name},`
                       : ""}
-                    {new Date(job.createdAt).toLocaleDateString()}
+                    Date:{new Date(job.dueDate).toLocaleDateString()}
                     <Tooltip content={job.memo}>
                       <BiNote />
                     </Tooltip>

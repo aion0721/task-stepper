@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import { JobStatus } from "@/types";
 
-type SortOrder = "asc" | "desc";
+type SortOrder = "asc" | "desc" | null;
 
 // Contextの型定義
 interface FilterContextType {
@@ -24,7 +24,7 @@ export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({
   const [filterStatus, setFilterStatus] = useState<JobStatus | "ALL">(
     JobStatus.IN_PROGRESS
   );
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>(null);
 
   return (
     <FilterContext.Provider
