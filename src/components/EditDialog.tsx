@@ -167,6 +167,14 @@ const EditDialog = ({ job }: DialogProps) => {
                   }
                 ></Textarea>
               </Field>
+              <Field label="リンク">
+                <Input
+                  value={targetJob.links}
+                  onChange={(e) =>
+                    setTargetJob({ ...targetJob, links: e.target.value })
+                  }
+                />
+              </Field>
               <Field label="作成日">
                 <Text>{new Date(targetJob.createdAt).toISOString()}</Text>
               </Field>

@@ -3,6 +3,7 @@ import {
   Card,
   ColorSwatch,
   Input,
+  Link,
   Presence,
   Spacer,
   Status,
@@ -11,7 +12,7 @@ import TaskSteps from "../TaskSteps";
 import { useJobs } from "@/context/JobContext";
 import { useAccordion } from "@/context/AccordionContext";
 import { JobStatus } from "@/types";
-import { BiNote } from "react-icons/bi";
+import { BiLinkExternal, BiNote } from "react-icons/bi";
 import {
   AccordionItem,
   AccordionItemContent,
@@ -121,6 +122,18 @@ const TaskStepper = () => {
                           style={{ whiteSpace: "pre-wrap", lineHeight: "1.0" }}
                         >
                           {job.memo}
+                        </Card.Body>
+                      </Card.Root>
+                    )}
+                    {job.links && job.links.length > 0 && (
+                      <Card.Root m="10px">
+                        <Card.Body
+                          style={{ whiteSpace: "pre-wrap", lineHeight: "1.0" }}
+                        >
+                          <Link href={job.links} target="_blank">
+                            {job.links}
+                            <BiLinkExternal />
+                          </Link>
                         </Card.Body>
                       </Card.Root>
                     )}

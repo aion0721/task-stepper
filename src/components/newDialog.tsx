@@ -47,6 +47,9 @@ const NewDialog = () => {
   const jobNameRef = useRef<HTMLInputElement>({
     value: "",
   } as HTMLInputElement);
+  const jobLinksRef = useRef<HTMLInputElement>({
+    value: "",
+  } as HTMLInputElement);
   const jobDateRef = useRef<HTMLInputElement>(null);
   const memoRef = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -86,6 +89,7 @@ const NewDialog = () => {
       memo: memoRef.current?.value || "",
       tasks: targetTaskTemplate,
       steps: 0,
+      links: jobLinksRef.current.value,
     };
 
     const newJob = createJob(newJobData); // `createJob`で新しいジョブを作成
@@ -215,6 +219,9 @@ const NewDialog = () => {
               </Field>
               <Field label="メモ">
                 <Textarea ref={memoRef}></Textarea>
+              </Field>
+              <Field label="リンク">
+                <Input type="text" ref={jobLinksRef} />
               </Field>
             </Fieldset.Content>
           </Fieldset.Root>
