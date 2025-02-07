@@ -21,9 +21,11 @@ import {
 import { useState } from "react";
 import { Field } from "../ui/field";
 import { Task, TaskTemplate } from "@/types";
-import { BiBookAdd, BiMessageAdd, BiTrash } from "react-icons/bi";
+import { BiBookAdd, BiMessageAdd, BiSave, BiTrash } from "react-icons/bi";
 import { toaster } from "../ui/toaster";
 import EditDialog from "@/components/TaskTemplateEditDialog";
+import { save } from "@tauri-apps/plugin-dialog";
+import { create, BaseDirectory } from "@tauri-apps/plugin-fs";
 
 const TaskTemplatePage = () => {
   const { taskTemplates, setTaskTemplates } = useTaskTemplates();
@@ -94,6 +96,23 @@ const TaskTemplatePage = () => {
       title: "ジョブが作成されました！",
       type: "success",
     });
+  };
+
+  const handleSaveFile = async (taskTemplate: TaskTemplate) => {
+    try {
+      const file = await create(`${taskTemplate.name}.json`, {
+        baseDir: BaseDirectory.Download,
+      });
+      await file.write(new TextEncoder().encode(JSON.stringify(taskTemplate)));
+      await file.close();
+      await toaster.create({
+        title: "ダウンロードフォルダに保存されました。",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("エラー:", error);
+      alert("ファイルの保存中にエラーが発生しました。");
+    }
   };
 
   return (
@@ -180,8 +199,17 @@ const TaskTemplatePage = () => {
                   {taskTemplate.name}
                 </Text>
 
-                {/* 編集ボタン */}
-                <EditDialog taskTemplate={taskTemplate} />
+                <Flex gap="2">
+                  {/* 編集ボタン */}
+                  <EditDialog taskTemplate={taskTemplate} />
+                  <Button
+                    colorPalette="green"
+                    onClick={() => handleSaveFile(taskTemplate)}
+                  >
+                    Export
+                    <BiSave />
+                  </Button>
+                </Flex>
               </Flex>
             ))
           ) : (
