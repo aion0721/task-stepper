@@ -54,7 +54,7 @@ const EditDialog = ({ job }: DialogProps) => {
   const handleAddTask = () => {
     const newTask = {
       id: crypto.randomUUID(),
-      name: "New Task",
+      name: "",
     };
 
     const updatedTasks = [...targetJob.tasks, newTask];

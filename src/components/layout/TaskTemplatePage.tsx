@@ -44,7 +44,7 @@ const TaskTemplatePage = () => {
   const handleAddTask = () => {
     const newTask = {
       id: crypto.randomUUID(),
-      name: "New Task",
+      name: "",
     };
 
     const updatedTasks = [...targetTaskTemplate.tasks, newTask];
