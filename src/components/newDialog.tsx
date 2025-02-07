@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Button,
+  ColorSwatch,
   createListCollection,
   Fieldset,
   HStack,
@@ -40,6 +41,7 @@ import {
   unregister,
 } from "@tauri-apps/plugin-global-shortcut";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { SegmentedControl } from "./ui/segmented-control";
 
 const NewDialog = () => {
   const { setJobs } = useJobs();
@@ -199,22 +201,18 @@ const NewDialog = () => {
                 </Button>
               </Field>
               <Field label="色選択">
-                <RadioGroup
+                <SegmentedControl
                   value={color}
                   onValueChange={(e) => setColor(e.value as JobColor)}
-                >
-                  <HStack>
-                    {jobColors.map((jobColor) => (
-                      <Radio
-                        key={jobColor}
-                        value={jobColor}
-                        colorPalette={jobColor}
-                      >
-                        {jobColor}
-                      </Radio>
-                    ))}
-                  </HStack>
-                </RadioGroup>
+                  items={jobColors.map((color) => ({
+                    value: color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
+                    label: (
+                      <HStack>
+                        <ColorSwatch value={color} />
+                      </HStack>
+                    ),
+                  }))}
+                />
               </Field>
               <Field label="メモ">
                 <Textarea ref={memoRef}></Textarea>
