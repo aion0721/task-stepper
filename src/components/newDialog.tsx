@@ -26,7 +26,6 @@ import { NewJob, Job, JobStatus, JobColor, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 import { BiAddToQueue, BiEraser } from "react-icons/bi";
-import { Radio, RadioGroup } from "./ui/radio";
 import {
   SelectContent,
   SelectItem,

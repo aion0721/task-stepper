@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  ColorSwatch,
   Fieldset,
   Flex,
+  HStack,
   Input,
   Stack,
   Text,
@@ -24,6 +26,8 @@ import { Job, Task } from "@/types";
 import { useJobs } from "@/context/JobContext";
 import { toaster } from "@/components/ui/toaster";
 import { BiEdit, BiMessageAdd, BiSolidTrash, BiTrash } from "react-icons/bi";
+import { SegmentedControl } from "./ui/segmented-control";
+import { JobColor } from "@/types";
 
 interface DialogProps {
   job: Job;
@@ -33,6 +37,7 @@ const EditDialog = ({ job }: DialogProps) => {
   const { setJobs } = useJobs();
   const [targetJob, setTargetJob] = useState<Job>(job);
   const [open, setOpen] = useState<boolean>(false);
+  const jobColors = Object.values(JobColor);
 
   // 新しいジョブを作成して状態にセット
   const updateJob = () => {
@@ -158,7 +163,25 @@ const EditDialog = ({ job }: DialogProps) => {
                   </Flex>
                 ))}
               </Field>
-              <Field label="step">{targetJob.steps}</Field>
+              <Field label="今のステップ">{targetJob.steps + 1}</Field>
+
+              <Field label="色選択">
+                <SegmentedControl
+                  value={targetJob.color}
+                  onValueChange={(e) =>
+                    setTargetJob({ ...targetJob, color: e.value as JobColor })
+                  }
+                  items={jobColors.map((color) => ({
+                    value: color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
+                    label: (
+                      <HStack>
+                        <ColorSwatch value={color} />
+                      </HStack>
+                    ),
+                  }))}
+                />
+              </Field>
+
               <Field label="メモ">
                 <Textarea
                   value={targetJob.memo}
