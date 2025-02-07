@@ -6,6 +6,7 @@ import FilterDrawer from "../FilterDrawer";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { ColorModeButton } from "../ui/color-mode";
+import { BiBook, BiHome } from "react-icons/bi";
 
 const Header: React.FC = () => {
   return (
@@ -32,10 +33,16 @@ const Header: React.FC = () => {
       </Flex>
       <Flex gap="4">
         <ChakraLink asChild>
-          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/">
+            Home
+            <BiHome />
+          </RouterLink>
         </ChakraLink>
         <ChakraLink asChild>
-          <RouterLink to="/template">Template</RouterLink>
+          <RouterLink to="/template">
+            Template
+            <BiBook />
+          </RouterLink>
         </ChakraLink>
       </Flex>
       <HStack>
