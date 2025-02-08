@@ -2,11 +2,13 @@ import {
   Box,
   Card,
   ColorSwatch,
+  Heading,
   Input,
   Link,
   Presence,
   Spacer,
   Status,
+  Text,
 } from "@chakra-ui/react";
 import TaskSteps from "../TaskSteps";
 import { useJobs } from "@/context/JobContext";
@@ -50,7 +52,8 @@ const TaskStepper = () => {
   }, [jobs, sortOrder]);
 
   return (
-    <Box mt="60px" height="calc(100vh - 80px)" as="main" px="20px">
+    <>
+      <Heading>Home</Heading>
       <Input
         my="10px"
         placeholder="ジョブ名でフィルター"
@@ -98,14 +101,16 @@ const TaskStepper = () => {
                       <Status.Indicator />
                     </Status.Root>
                     <ColorSwatch value={job.color} />
-                    {job.name}
+                    <Text fontSize="sm">{job.name}</Text>
                     <Spacer />
-                    {job.tasks &&
-                    job.tasks[job.steps] &&
-                    job.tasks[job.steps].name
-                      ? `Next:${job.tasks[job.steps].name},`
-                      : ""}
-                    Date:{new Date(job.dueDate).toLocaleDateString()}
+                    <Text fontSize="sm">
+                      {job.tasks &&
+                      job.tasks[job.steps] &&
+                      job.tasks[job.steps].name
+                        ? `Next:${job.tasks[job.steps].name},`
+                        : ""}
+                      Date:{new Date(job.dueDate).toLocaleDateString()}
+                    </Text>
                     <Tooltip content={job.memo}>
                       <BiNote />
                     </Tooltip>
@@ -155,7 +160,7 @@ const TaskStepper = () => {
           <Box>No tasks</Box>
         )}
       </AccordionRoot>
-    </Box>
+    </>
   );
 };
 

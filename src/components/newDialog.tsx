@@ -41,6 +41,7 @@ import {
 } from "@tauri-apps/plugin-global-shortcut";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { SegmentedControl } from "./ui/segmented-control";
+import { useConfig } from "@/context/ConfigContext";
 
 const NewDialog = () => {
   const { setJobs } = useJobs();
@@ -58,7 +59,7 @@ const NewDialog = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [taskTemplateValue, setTaskTemplateValue] = useState<string[]>([]);
 
-  const jobColors = Object.values(JobColor);
+  const { legendColors } = useConfig();
 
   const createJob = (newJobData: NewJob): Job => {
     const now = new Date();
@@ -203,11 +204,12 @@ const NewDialog = () => {
                 <SegmentedControl
                   value={color}
                   onValueChange={(e) => setColor(e.value as JobColor)}
-                  items={jobColors.map((color) => ({
-                    value: color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
+                  items={legendColors.map((legendColor) => ({
+                    value: legendColor.color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
                     label: (
                       <HStack>
-                        <ColorSwatch value={color} />
+                        <ColorSwatch value={legendColor.color} />
+                        {legendColor.mean}
                       </HStack>
                     ),
                   }))}

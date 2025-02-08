@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { Job, TaskTemplate } from "./types";
+import { Job, TaskTemplate, JobColor, LegendColor } from "./types";
 import { Toaster } from "@/components/ui/toaster";
-import { Store } from "@tauri-apps/plugin-store";
+import { load } from "@tauri-apps/plugin-store";
 import { useJobs } from "./context/JobContext";
 import { Global } from "@emotion/react";
 import { useTaskTemplates } from "@/context/TaskTemplateContext";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./components/utils/Routing";
+import { useConfig } from "./context/ConfigContext";
 
 function App() {
   const { jobs, setJobs } = useJobs();
   const { taskTemplates, setTaskTemplates } = useTaskTemplates();
-  const [store, setStore] = useState<Store | null>(null);
+  const { legendColors, setLegendColors } = useConfig();
   const [isInitialized, setIsInitialized] = useState(false);
 
   const GlobalStyles = () => (
@@ -29,49 +30,94 @@ function App() {
 
   // ストアの初期化
   useEffect(() => {
-    const initializeStore = async () => {
+    const initializeStores = async () => {
       try {
-        const loadedStore = await Store.load("data.json");
-        setStore(loadedStore);
+        // Data.json
+        const storeData = await load("data.json");
 
-        // ストアからデータを取得
-        const storedJobs = await loadedStore.get<Job[]>("jobs");
-        if (storedJobs) {
-          setJobs(storedJobs);
+        // get jobs
+        const storeJobs = await storeData.get<Job[]>("jobs");
+        if (storeJobs) {
+          setJobs(storeJobs);
         }
 
-        // ストアからデータを取得
-        const storedTaskTemplates =
-          await loadedStore.get<TaskTemplate[]>("taskTemplates");
-        if (storedTaskTemplates) {
-          setTaskTemplates(storedTaskTemplates);
+        // get taskTemplates
+        const storeTaskTemplates =
+          await storeData.get<TaskTemplate[]>("taskTemplate");
+        if (storeTaskTemplates) {
+          setTaskTemplates(storeTaskTemplates);
+        }
+
+        // Config.json
+        const storeConfig = await load("config.json");
+
+        // get legendColor
+        const storeLegendColor =
+          await storeConfig.get<LegendColor[]>("legendColor");
+
+        if (storeLegendColor) {
+          // 全てのJobColorを配列として取得
+          const allJobColors = Object.values(JobColor) as string[];
+
+          // storeLegendColorに欠けているJobColorを追加
+          const completeLegendColors = (
+            storeLegendColor: LegendColor[]
+          ): LegendColor[] => {
+            // 欠けているJobColorを特定
+            const missingColors = allJobColors.filter(
+              (color) =>
+                !storeLegendColor.some((legend) => legend.color === color)
+            );
+
+            // 欠けている色をmean: ''で追加
+            const missingLegendColors: LegendColor[] = missingColors.map(
+              (color) => ({
+                color: color as JobColor, // 型アサーションでJobColorにキャスト
+                mean: "",
+              })
+            );
+
+            // 元の配列と欠けている色を結合して返す
+            return [...storeLegendColor, ...missingLegendColors];
+          };
+
+          const updatedLegendColors = completeLegendColors(storeLegendColor);
+          setLegendColors(updatedLegendColors);
         }
       } catch (error) {
-        console.error("ストアの初期化中にエラーが発生しました:", error);
+        console.error("ストア初期化中にエラーが発生しました:", error);
       } finally {
         setIsInitialized(true);
       }
     };
 
-    initializeStore();
+    initializeStores();
   }, []);
 
   // jobsが変更されたら保存
   useEffect(() => {
-    if (store && isInitialized) {
-      const saveJobs = async () => {
+    if (isInitialized) {
+      const saveData = async () => {
         try {
-          await store.set("jobs", jobs);
-          await store.set("taskTemplates", taskTemplates);
-          await store.save();
+          const storeData = await load("data.json");
+          const storeConfig = await load("config.json");
+
+          // Set a value.
+          await storeData.set("jobs", jobs);
+          await storeData.set("taskTemplates", taskTemplates);
+          await storeData.save();
+
+          // config.json に保存
+          await storeConfig.set("legendColor", legendColors);
+          await storeConfig.save();
         } catch (error) {
           console.error("データ保存中にエラーが発生しました:", error);
         }
       };
 
-      saveJobs();
+      saveData();
     }
-  }, [jobs, taskTemplates, store, isInitialized]);
+  }, [jobs, taskTemplates, legendColors, isInitialized]);
 
   return (
     <>

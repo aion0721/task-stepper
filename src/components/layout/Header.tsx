@@ -1,14 +1,24 @@
-import React from "react";
-import { Flex, Heading, HStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, ColorSwatch, Flex, Heading, HStack } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
 import FilterDrawer from "../FilterDrawer";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { ColorModeButton } from "../ui/color-mode";
-import { BiBook, BiHome } from "react-icons/bi";
+import { BiBook, BiCog, BiHome } from "react-icons/bi";
+import {
+  ActionBarCloseTrigger,
+  ActionBarContent,
+  ActionBarRoot,
+} from "../ui/action-bar";
+import { Checkbox } from "../ui/checkbox";
+import { useConfig } from "@/context/ConfigContext";
 
 const Header: React.FC = () => {
+  const [checked, setChecked] = useState(false);
+  const { legendColors } = useConfig();
+
   return (
     <Flex
       as="header"
@@ -44,8 +54,38 @@ const Header: React.FC = () => {
             <BiBook />
           </RouterLink>
         </ChakraLink>
+        <ChakraLink asChild>
+          <RouterLink to="/config">
+            Config
+            <BiCog />
+          </RouterLink>
+        </ChakraLink>
       </Flex>
       <HStack>
+        <Checkbox
+          checked={checked}
+          onCheckedChange={(e) => setChecked(!!e.checked)}
+        >
+          色凡例
+        </Checkbox>
+        <ActionBarRoot
+          open={checked}
+          onOpenChange={(e) => setChecked(e.open)}
+          closeOnInteractOutside={false}
+        >
+          <ActionBarContent key="action">
+            <ActionBarCloseTrigger />
+            {legendColors.map((legendColor) => (
+              <Box key={legendColor.color}>
+                <ColorSwatch
+                  value={legendColor.color}
+                  key={legendColor.color}
+                />
+                {legendColor.mean}
+              </Box>
+            ))}
+          </ActionBarContent>
+        </ActionBarRoot>
         {/* ボタン */}
         <NewDialog />
         <FilterDrawer />

@@ -10,7 +10,7 @@ export enum JobColor {
   Orange = "orange",
   Blue = "blue",
   Green = "green",
-  Yello = "yellow",
+  Yellow = "yellow",
   Red = "red",
 }
 

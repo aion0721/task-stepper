@@ -180,118 +180,116 @@ const TaskTemplatePage = () => {
 
   return (
     <>
-      <Box mt="70px" height="calc(100vh - 80px)" as="main" px="20px">
-        <Heading>Template</Heading>
-        <HStack marginTop="10px">
-          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
-            <DialogTrigger asChild>
-              <Button colorPalette="teal" variant="surface" flex="1">
-                タスクテンプレートを追加する
-                <BiBookAdd />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogBody>
-                <Fieldset.Root>
-                  <Stack>
-                    <Fieldset.Legend>AddTemplate</Fieldset.Legend>
-                    <Fieldset.HelperText>Add Template</Fieldset.HelperText>
-                  </Stack>
-                  <Fieldset.Content>
-                    <Field label="TemplateName">
-                      <Input
-                        value={targetTaskTemplate.name}
-                        onChange={(e) =>
-                          setTargetTaskTemplate({
-                            ...targetTaskTemplate,
-                            name: e.target.value,
-                          })
-                        }
-                        placeholder="新規契約"
-                      />
-                    </Field>
-                    <Field label="タスク">
-                      <Button
-                        onClick={handleAddTask}
-                        w="100%"
-                        colorPalette="blue"
-                      >
-                        AddTask
-                        <BiMessageAdd />
-                      </Button>
-                      {targetTaskTemplate.tasks.map((task, index) => (
-                        <Flex key={task.id} w="100%" gap="4">
-                          <Input
-                            defaultValue={task.name}
-                            key={index}
-                            onChange={(e) => handleTaskUpdate(e, task)}
-                          ></Input>
-                          <Button
-                            onClick={() => handleTaskDelete(task)}
-                            colorPalette="red"
-                          >
-                            <BiTrash />
-                          </Button>
-                        </Flex>
-                      ))}
-                    </Field>
-                  </Fieldset.Content>
-                </Fieldset.Root>
-              </DialogBody>
-              <DialogFooter>
-                <DialogActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogActionTrigger>
-                <Button onClick={addTaskTemplate}>Save</Button>
-              </DialogFooter>
-              <DialogCloseTrigger />
-            </DialogContent>
-          </DialogRoot>
-          <Button
-            colorPalette="blue"
-            variant="surface"
-            onClick={importTaskTemplate}
-            flex="1"
-          >
-            タスクテンプレートをインポートする
-            <BiFolderOpen />
-          </Button>
-        </HStack>
-        <Box w="100%" p={4}>
-          {taskTemplates.length > 0 ? (
-            taskTemplates.map((taskTemplate) => (
-              <Flex
-                key={taskTemplate.id}
-                alignItems="center"
-                justifyContent="space-between"
-                p={2}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-              >
-                {/* タイトル */}
-                <Text fontWeight="bold" fontSize="md">
-                  {taskTemplate.name}
-                </Text>
+      <Heading>Template</Heading>
+      <HStack marginTop="10px">
+        <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+          <DialogTrigger asChild>
+            <Button colorPalette="teal" variant="surface" flex="1">
+              タスクテンプレートを追加する
+              <BiBookAdd />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogBody>
+              <Fieldset.Root>
+                <Stack>
+                  <Fieldset.Legend>AddTemplate</Fieldset.Legend>
+                  <Fieldset.HelperText>Add Template</Fieldset.HelperText>
+                </Stack>
+                <Fieldset.Content>
+                  <Field label="TemplateName">
+                    <Input
+                      value={targetTaskTemplate.name}
+                      onChange={(e) =>
+                        setTargetTaskTemplate({
+                          ...targetTaskTemplate,
+                          name: e.target.value,
+                        })
+                      }
+                      placeholder="新規契約"
+                    />
+                  </Field>
+                  <Field label="タスク">
+                    <Button
+                      onClick={handleAddTask}
+                      w="100%"
+                      colorPalette="blue"
+                    >
+                      AddTask
+                      <BiMessageAdd />
+                    </Button>
+                    {targetTaskTemplate.tasks.map((task, index) => (
+                      <Flex key={task.id} w="100%" gap="4">
+                        <Input
+                          defaultValue={task.name}
+                          key={index}
+                          onChange={(e) => handleTaskUpdate(e, task)}
+                        ></Input>
+                        <Button
+                          onClick={() => handleTaskDelete(task)}
+                          colorPalette="red"
+                        >
+                          <BiTrash />
+                        </Button>
+                      </Flex>
+                    ))}
+                  </Field>
+                </Fieldset.Content>
+              </Fieldset.Root>
+            </DialogBody>
+            <DialogFooter>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogActionTrigger>
+              <Button onClick={addTaskTemplate}>Save</Button>
+            </DialogFooter>
+            <DialogCloseTrigger />
+          </DialogContent>
+        </DialogRoot>
+        <Button
+          colorPalette="blue"
+          variant="surface"
+          onClick={importTaskTemplate}
+          flex="1"
+        >
+          タスクテンプレートをインポートする
+          <BiFolderOpen />
+        </Button>
+      </HStack>
+      <Box w="100%" p={4}>
+        {taskTemplates.length > 0 ? (
+          taskTemplates.map((taskTemplate) => (
+            <Flex
+              key={taskTemplate.id}
+              alignItems="center"
+              justifyContent="space-between"
+              p={2}
+              borderBottom="1px solid"
+              borderColor="gray.200"
+            >
+              {/* タイトル */}
+              <Text fontWeight="bold" fontSize="md">
+                {taskTemplate.name}
+              </Text>
 
-                <Flex gap="2">
-                  {/* 編集ボタン */}
-                  <EditDialog taskTemplate={taskTemplate} />
-                  <Button
-                    colorPalette="green"
-                    onClick={() => handleSaveFile(taskTemplate)}
-                  >
-                    Export
-                    <BiSave />
-                  </Button>
-                </Flex>
+              <Flex gap="2">
+                {/* 編集ボタン */}
+                <EditDialog taskTemplate={taskTemplate} />
+                <Button
+                  colorPalette="green"
+                  onClick={() => handleSaveFile(taskTemplate)}
+                >
+                  Export
+                  <BiSave />
+                </Button>
               </Flex>
-            ))
-          ) : (
-            <Text textAlign="center" color="gray.500">
-              no templates
-            </Text>
-          )}
-        </Box>
+            </Flex>
+          ))
+        ) : (
+          <Text textAlign="center" color="gray.500">
+            no templates
+          </Text>
+        )}
       </Box>
     </>
   );
