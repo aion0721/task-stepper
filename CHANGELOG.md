@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/aion0721/task-stepper/compare/v0.1.8...v1.0.0) (2025-02-08)
+
+
+### Features
+
+* import function ([0082b2e](https://github.com/aion0721/task-stepper/commit/0082b2e524baeedb485c5d660ba78802b2d25033))
+* legend color ([f75b5f0](https://github.com/aion0721/task-stepper/commit/f75b5f0f822c45ffc6338fb954f7970db01f30d0))
+* tasktemplate export ([fef6965](https://github.com/aion0721/task-stepper/commit/fef6965dd8fa53922b6b270e79b96d48c8b20e2b))
+
+
+### Bug Fixes
+
+* add icon ([ce07129](https://github.com/aion0721/task-stepper/commit/ce0712984e033708066dec9838b8a1186c0e78f5))
+* add release semver ([0244081](https://github.com/aion0721/task-stepper/commit/02440817b754d797ddd29330372caa4afe23866f))
+* change color ([c7a2736](https://github.com/aion0721/task-stepper/commit/c7a2736dbc172e16bc38a2879c089fd00e2d2e91))
+* change color segment ([d532148](https://github.com/aion0721/task-stepper/commit/d532148b6485d14c0de6f4d6f37f9737ca94440b))
+* change window size ([304fb62](https://github.com/aion0721/task-stepper/commit/304fb62dd44bd5c415b9cd13f63f58dcd23d17b1))
+* delete 'newtask' ([0ec62e1](https://github.com/aion0721/task-stepper/commit/0ec62e1f936448faeed5b2fe03a16cf81748015e))
+
 ### [0.1.8](https://github.com/aion0721/task-stepper/compare/v0.1.7...v0.1.8) (2025-02-06)
 
 
