@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { Box, ColorSwatch, Flex, Heading, HStack } from "@chakra-ui/react";
+import { Button, ColorSwatch, Flex, Heading, HStack } from "@chakra-ui/react";
 import NewDialog from "../NewDialog";
 import { GiStairsGoal } from "react-icons/gi";
 import FilterDrawer from "../FilterDrawer";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { ColorModeButton } from "../ui/color-mode";
-import { BiBook, BiCog, BiHome } from "react-icons/bi";
+import { BiBook, BiCog, BiHome, BiInfoCircle } from "react-icons/bi";
 import {
   ActionBarCloseTrigger,
   ActionBarContent,
   ActionBarRoot,
+  ActionBarSeparator,
 } from "../ui/action-bar";
 import { Checkbox } from "../ui/checkbox";
 import { useConfig } from "@/context/ConfigContext";
+import { ToggleTip } from "../ui/toggle-tip";
 
 const Header: React.FC = () => {
   const [checked, setChecked] = useState(false);
@@ -73,17 +75,25 @@ const Header: React.FC = () => {
           onOpenChange={(e) => setChecked(e.open)}
           closeOnInteractOutside={false}
         >
-          <ActionBarContent key="action">
+          <ActionBarContent key="action" gap={2}>
             <ActionBarCloseTrigger />
             {legendColors.map((legendColor) => (
-              <Box key={legendColor.color}>
+              <Flex key={legendColor.color} gap={2} alignItems="center">
                 <ColorSwatch
                   value={legendColor.color}
                   key={legendColor.color}
                 />
+
                 {legendColor.mean}
-              </Box>
+              </Flex>
             ))}
+            <ActionBarSeparator />
+
+            <ToggleTip content="色凡例を変更するには上の「Config」から">
+              <Button size="xs" variant="ghost">
+                <BiInfoCircle />
+              </Button>
+            </ToggleTip>
           </ActionBarContent>
         </ActionBarRoot>
         {/* ボタン */}
