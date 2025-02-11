@@ -28,6 +28,7 @@ import { toaster } from "@/components/ui/toaster";
 import { BiEdit, BiMessageAdd, BiSolidTrash, BiTrash } from "react-icons/bi";
 import { SegmentedControl } from "./ui/segmented-control";
 import { JobColor } from "@/types";
+import { useConfig } from "@/context/ConfigContext";
 
 interface DialogProps {
   job: Job;
@@ -37,7 +38,7 @@ const EditDialog = ({ job }: DialogProps) => {
   const { setJobs } = useJobs();
   const [targetJob, setTargetJob] = useState<Job>(job);
   const [open, setOpen] = useState<boolean>(false);
-  const jobColors = Object.values(JobColor);
+  const { legendColors } = useConfig();
 
   // 新しいジョブを作成して状態にセット
   const updateJob = () => {
@@ -99,7 +100,12 @@ const EditDialog = ({ job }: DialogProps) => {
   }, [job]);
 
   return (
-    <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+    <DialogRoot
+      size="cover"
+      open={open}
+      onOpenChange={(e) => setOpen(e.open)}
+      scrollBehavior="inside"
+    >
       <DialogTrigger asChild>
         <Button colorPalette="cyan" flex="1">
           Edit
@@ -171,11 +177,12 @@ const EditDialog = ({ job }: DialogProps) => {
                   onValueChange={(e) =>
                     setTargetJob({ ...targetJob, color: e.value as JobColor })
                   }
-                  items={jobColors.map((color) => ({
-                    value: color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
+                  items={legendColors.map((legendColor) => ({
+                    value: legendColor.color.toLowerCase(), // 値を小文字に変換 (必要に応じて)
                     label: (
                       <HStack>
-                        <ColorSwatch value={color} />
+                        <ColorSwatch value={legendColor.color} />
+                        {legendColor.mean}
                       </HStack>
                     ),
                   }))}

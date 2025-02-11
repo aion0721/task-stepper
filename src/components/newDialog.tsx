@@ -145,7 +145,12 @@ const NewDialog = () => {
   }, [setOpen]); // Reactルールに従い依存配列にsetOpenを追加
 
   return (
-    <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+    <DialogRoot
+      size="cover"
+      open={open}
+      onOpenChange={(e) => setOpen(e.open)}
+      scrollBehavior="inside"
+    >
       <DialogTrigger asChild>
         <Button colorPalette="teal" variant="surface">
           AddJob

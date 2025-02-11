@@ -11,6 +11,7 @@
   "permissions": [
     "global-shortcut:default",
     "dialog:default",
-    "fs:default"
+    "fs:default",
+    "global-shortcut:default"
   ]
 }
