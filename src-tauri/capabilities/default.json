@@ -16,6 +16,7 @@
     {
       "identifier": "fs:allow-download-write-recursive",
       "allow": [{ "path": "$DOWNLOAD/*" }]
-    }
+    },
+    "cli:default"
   ]
 }

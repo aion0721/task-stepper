@@ -31,5 +31,21 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "cli": {
+      "args": [
+        {
+          "name": "source",
+          "index": 1,
+          "takesValue": true
+        },
+        {
+          "name": "type",
+          "short": "t",
+          "takesValue": true
+        }
+      ]
+    }
   }
 }

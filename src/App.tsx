@@ -8,11 +8,12 @@ import { useTaskTemplates } from "@/context/TaskTemplateContext";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./components/utils/Routing";
 import { useConfig } from "./context/ConfigContext";
+import { getMatches } from "@tauri-apps/plugin-cli";
 
 function App() {
   const { jobs, setJobs } = useJobs();
   const { taskTemplates, setTaskTemplates } = useTaskTemplates();
-  const { legendColors, setLegendColors } = useConfig();
+  const { legendColors, setLegendColors, userData, setUserData } = useConfig();
   const [isInitialized, setIsInitialized] = useState(false);
 
   const GlobalStyles = () => (
@@ -32,75 +33,97 @@ function App() {
   useEffect(() => {
     const initializeStores = async () => {
       try {
-        // Data.json
-        const storeData = await load("data.json");
+        const fetchedMatches = (await (
+          await getMatches()
+        ).args.source.value) as string | undefined;
 
-        // get jobs
-        const storeJobs = await storeData.get<Job[]>("jobs");
-        if (storeJobs) {
-          setJobs(storeJobs);
-        }
-
-        // get taskTemplates
-        const storeTaskTemplates =
-          await storeData.get<TaskTemplate[]>("taskTemplates");
-        if (storeTaskTemplates) {
-          setTaskTemplates(storeTaskTemplates);
-        }
-
-        // Config.json
-        const storeConfig = await load("config.json");
-
-        // get legendColor
-        const storeLegendColor =
-          await storeConfig.get<LegendColor[]>("legendColor");
-
-        if (storeLegendColor) {
-          // 全てのJobColorを配列として取得
-          const allJobColors = Object.values(JobColor) as string[];
-
-          // storeLegendColorに欠けているJobColorを追加
-          const completeLegendColors = (
-            storeLegendColor: LegendColor[]
-          ): LegendColor[] => {
-            // 欠けているJobColorを特定
-            const missingColors = allJobColors.filter(
-              (color) =>
-                !storeLegendColor.some((legend) => legend.color === color)
-            );
-
-            // 欠けている色をmean: ''で追加
-            const missingLegendColors: LegendColor[] = missingColors.map(
-              (color) => ({
-                color: color as JobColor, // 型アサーションでJobColorにキャスト
-                mean: "",
-              })
-            );
-
-            // 元の配列と欠けている色を結合して返す
-            return [...storeLegendColor, ...missingLegendColors];
-          };
-
-          const updatedLegendColors = completeLegendColors(storeLegendColor);
-          setLegendColors(updatedLegendColors);
-        }
+        // undefined の場合は空文字列を設定
+        const basePath = fetchedMatches ?? ""; // Nullish coalescing operator (??) を使用
+        setUserData({ dataBasePath: basePath }); // 状態に保存
       } catch (error) {
         console.error("ストア初期化中にエラーが発生しました:", error);
-      } finally {
-        setIsInitialized(true);
       }
     };
 
     initializeStores();
   }, []);
 
+  // basePath が更新されたら処理を実行
+  useEffect(() => {
+    if (userData.dataBasePath !== undefined) {
+      const loadData = async () => {
+        try {
+          // Data.json
+          const storeData = await load(userData.dataBasePath + "data.json");
+          console.log(userData);
+
+          // get jobs
+          const storeJobs = await storeData.get<Job[]>("jobs");
+          if (storeJobs) {
+            setJobs(storeJobs);
+          }
+
+          // get taskTemplates
+          const storeTaskTemplates =
+            await storeData.get<TaskTemplate[]>("taskTemplates");
+          if (storeTaskTemplates) {
+            setTaskTemplates(storeTaskTemplates);
+          }
+
+          // Config.json
+          const storeConfig = await load(userData.dataBasePath + "config.json");
+
+          // get legendColor
+          const storeLegendColor =
+            await storeConfig.get<LegendColor[]>("legendColor");
+
+          if (storeLegendColor) {
+            // 全てのJobColorを配列として取得
+            const allJobColors = Object.values(JobColor) as string[];
+
+            // storeLegendColorに欠けているJobColorを追加
+            const completeLegendColors = (
+              storeLegendColor: LegendColor[]
+            ): LegendColor[] => {
+              // 欠けているJobColorを特定
+              const missingColors = allJobColors.filter(
+                (color) =>
+                  !storeLegendColor.some((legend) => legend.color === color)
+              );
+
+              // 欠けている色をmean: ''で追加
+              const missingLegendColors: LegendColor[] = missingColors.map(
+                (color) => ({
+                  color: color as JobColor, // 型アサーションでJobColorにキャスト
+                  mean: "",
+                })
+              );
+
+              // 元の配列と欠けている色を結合して返す
+              return [...storeLegendColor, ...missingLegendColors];
+            };
+
+            const updatedLegendColors = completeLegendColors(storeLegendColor);
+            setLegendColors(updatedLegendColors);
+          }
+        } catch (error) {
+          console.error("データ読み込み中にエラーが発生しました:", error);
+        } finally {
+          setIsInitialized(true);
+        }
+      };
+
+      loadData();
+    }
+  }, [userData]); // basePath が変更されるたびに実行される
+
   // jobsが変更されたら保存
   useEffect(() => {
     if (isInitialized) {
       const saveData = async () => {
         try {
-          const storeData = await load("data.json");
-          const storeConfig = await load("config.json");
+          const storeData = await load(userData.dataBasePath + "data.json");
+          const storeConfig = await load(userData.dataBasePath + "config.json");
 
           // Set a value.
           await storeData.set("jobs", jobs);

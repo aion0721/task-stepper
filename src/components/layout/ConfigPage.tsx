@@ -5,6 +5,7 @@ import {
   Heading,
   IconButton,
   Table,
+  Text,
 } from "@chakra-ui/react";
 import {
   AccordionItem,
@@ -16,7 +17,7 @@ import { LuCheck, LuPencilLine, LuX } from "react-icons/lu";
 import { useConfig } from "@/context/ConfigContext";
 
 const ConfigPage = () => {
-  const { legendColors, setLegendColors } = useConfig();
+  const { legendColors, setLegendColors, userData } = useConfig();
   return (
     <>
       <Heading>Config</Heading>
@@ -82,6 +83,12 @@ const ConfigPage = () => {
                   })}
                 </Table.Body>
               </Table.Root>
+            </AccordionItemContent>
+          </AccordionItem>
+          <AccordionItem key="config" value="UserData">
+            <AccordionItemTrigger>UserData</AccordionItemTrigger>
+            <AccordionItemContent>
+              <Text>SavePath:{userData.dataBasePath}</Text>
             </AccordionItemContent>
           </AccordionItem>
         </AccordionRoot>
