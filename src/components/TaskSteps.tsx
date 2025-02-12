@@ -14,6 +14,7 @@ import {
   BiCaretRightCircle,
   BiCaretUpCircle,
   BiCheckCircle,
+  BiStopCircle,
 } from "react-icons/bi";
 import { Job, JobStatus } from "@/types";
 import EditDialog from "./EditDialog";
@@ -64,10 +65,19 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
       )
     );
   };
+
   const handleClose = (jobid: string) => {
     setJobs((prev) =>
       prev.map((job: Job) =>
         job.id === jobid ? { ...job, status: JobStatus.COMPLETED } : job
+      )
+    );
+  };
+
+  const handlePending = (jobid: string) => {
+    setJobs((prev) =>
+      prev.map((job: Job) =>
+        job.id === jobid ? { ...job, status: JobStatus.PENDING } : job
       )
     );
   };
@@ -111,20 +121,29 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
           ""
         )}
         {job.status === JobStatus.IN_PROGRESS ? (
-          <Button
-            colorPalette="green"
-            onClick={() => handleClose(job.id)}
-            disabled={job.steps !== job.tasks.length}
-            flex="1"
-          >
-            Close
-            <BiCheckCircle />
-          </Button>
+          job.steps === job.tasks.length ? (
+            <Button
+              colorPalette="green"
+              onClick={() => handleClose(job.id)}
+              flex="1"
+            >
+              Close
+              <BiCheckCircle />
+            </Button>
+          ) : (
+            <Button
+              colorPalette="yellow"
+              onClick={() => handlePending(job.id)}
+              flex="1"
+            >
+              Pending
+              <BiStopCircle />
+            </Button>
+          )
         ) : (
           <Button
             colorPalette="purple"
             onClick={() => handleReopen(job.id)}
-            disabled={job.steps !== job.tasks.length}
             flex="1"
           >
             ReOpen

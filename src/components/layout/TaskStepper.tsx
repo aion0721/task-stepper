@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   ColorSwatch,
+  Flex,
   Heading,
   Input,
   Link,
@@ -14,7 +15,13 @@ import TaskSteps from "../TaskSteps";
 import { useJobs } from "@/context/JobContext";
 import { useAccordion } from "@/context/AccordionContext";
 import { JobStatus } from "@/types";
-import { BiLinkExternal, BiNote } from "react-icons/bi";
+import {
+  BiLinkExternal,
+  BiMessageRoundedCheck,
+  BiMessageRoundedDots,
+  BiMessageRoundedError,
+  BiNote,
+} from "react-icons/bi";
 import {
   AccordionItem,
   AccordionItemContent,
@@ -85,9 +92,17 @@ const TaskStepper = () => {
                 value={job.id}
                 bg={{
                   base:
-                    job.status === JobStatus.IN_PROGRESS ? "green.100" : "gray", // ライトモード
+                    job.status === JobStatus.IN_PROGRESS
+                      ? "green.100" // IN_PROGRESS の場合
+                      : job.status === JobStatus.COMPLETED
+                        ? "gray.100" // COMPLETE の場合
+                        : "yellow.100", // PENDING の場合
                   _dark:
-                    job.status === JobStatus.IN_PROGRESS ? "green" : "gray.600", // ダークモード
+                    job.status === JobStatus.IN_PROGRESS
+                      ? "green.500" // IN_PROGRESS の場合 (ダークモード)
+                      : job.status === JobStatus.COMPLETED
+                        ? "gray.700" // COMPLETE の場合 (ダークモード)
+                        : "yellow.500", // PENDING の場合 (ダークモード)
                 }}
                 transition="background-color 0.3s ease-in-out" // 背景色のトランジション
               >
@@ -100,8 +115,17 @@ const TaskStepper = () => {
                     >
                       <Status.Indicator />
                     </Status.Root>
-                    <ColorSwatch value={job.color} />
-                    <Text fontSize="sm">{job.name}</Text>
+                    <Flex alignItems="center" gap={2}>
+                      <ColorSwatch value={job.color} />
+                      {job.status === JobStatus.IN_PROGRESS ? (
+                        <BiMessageRoundedDots />
+                      ) : job.status === JobStatus.COMPLETED ? (
+                        <BiMessageRoundedCheck />
+                      ) : (
+                        <BiMessageRoundedError />
+                      )}
+                      <Text fontSize="sm">{job.name}</Text>
+                    </Flex>
                     <Spacer />
                     <Text fontSize="sm">
                       {job.tasks &&
