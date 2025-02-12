@@ -43,7 +43,7 @@ function App() {
 
         // get taskTemplates
         const storeTaskTemplates =
-          await storeData.get<TaskTemplate[]>("taskTemplate");
+          await storeData.get<TaskTemplate[]>("taskTemplates");
         if (storeTaskTemplates) {
           setTaskTemplates(storeTaskTemplates);
         }

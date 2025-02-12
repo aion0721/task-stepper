@@ -101,7 +101,7 @@ const TaskTemplatePage = () => {
     setOpen(false);
 
     toaster.create({
-      title: "ジョブが作成されました！",
+      title: "タスクテンプレートが作成されました！",
       type: "success",
     });
   };
