@@ -99,7 +99,16 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
     >
       <StepsList onClick={() => console.log("aa")}>
         {job.tasks.map((task, taskIndex) => (
-          <StepsItem key={task.id} index={taskIndex} title={task.name} />
+          <StepsItem
+            key={task.id}
+            index={taskIndex}
+            title={task.name}
+            description={
+              task.startDate
+                ? new Date(task.startDate).toLocaleDateString() // Dateオブジェクトに変換してからフォーマット
+                : "" // startDateが未定義の場合は空文字
+            }
+          />
         ))}
       </StepsList>
       <HStack>

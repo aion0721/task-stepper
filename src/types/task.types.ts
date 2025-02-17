@@ -1,6 +1,7 @@
 export interface Task {
   id: string;
   name: string;
+  startDate?: Date;
 }
 
 export type NewTask = Omit<Task, "id">;

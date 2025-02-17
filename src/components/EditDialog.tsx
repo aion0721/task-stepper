@@ -69,12 +69,24 @@ const EditDialog = ({ job }: DialogProps) => {
 
   const handleTaskUpdate = (
     e: React.ChangeEvent<HTMLInputElement>,
-    task: Task
+    task: Task,
+    field: "name" | "startDate"
   ) => {
-    const updatedName = e.target.value;
+    const updatedValue =
+      field === "startDate" ? e.target.value : e.target.value;
+
     // タスク配列を更新
     const updatedTasks = targetJob.tasks.map((t) =>
-      t.id === task.id ? { ...t, name: updatedName, updatedAt: new Date() } : t
+      t.id === task.id
+        ? {
+            ...t,
+            [field]:
+              field === "startDate"
+                ? new Date(updatedValue).toISOString()
+                : updatedValue,
+            updatedAt: new Date(),
+          }
+        : t
     );
 
     // targetJobの状態を更新
@@ -155,10 +167,23 @@ const EditDialog = ({ job }: DialogProps) => {
                 </Button>
                 {targetJob.tasks.map((task, index) => (
                   <Flex key={task.id} w="100%" gap="4">
+                    {/* タスク名の入力 */}
                     <Input
                       defaultValue={task.name}
-                      key={index}
-                      onChange={(e) => handleTaskUpdate(e, task)}
+                      key={`name-${index}`}
+                      onChange={(e) => handleTaskUpdate(e, task, "name")}
+                    ></Input>
+
+                    {/* 開始日の入力 */}
+                    <Input
+                      type="date"
+                      defaultValue={
+                        task.startDate
+                          ? new Date(task.startDate).toISOString().split("T")[0]
+                          : ""
+                      }
+                      key={`startDate-${index}`}
+                      onChange={(e) => handleTaskUpdate(e, task, "startDate")}
                     ></Input>
                     <Button
                       onClick={() => handleTaskDelete(task)}

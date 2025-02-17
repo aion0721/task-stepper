@@ -14,7 +14,7 @@ import {
 import TaskSteps from "../TaskSteps";
 import { useJobs } from "@/context/JobContext";
 import { useAccordion } from "@/context/AccordionContext";
-import { JobStatus } from "@/types";
+import { Job, JobStatus } from "@/types";
 import {
   BiLinkExternal,
   BiMessageRoundedCheck,
@@ -57,6 +57,19 @@ const TaskStepper = () => {
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
   }, [jobs, sortOrder]);
+
+  const getNextTaskDescription = (job: Job): string => {
+    if (!job.tasks || !job.tasks[job.steps]) return ""; // タスクまたはステップが存在しない場合
+
+    const task = job.tasks[job.steps];
+    if (!task.name) return ""; // タスク名が存在しない場合
+
+    const startDate = task.startDate
+      ? `(${new Date(task.startDate).toLocaleDateString()})`
+      : "";
+
+    return `Next: ${task.name}${startDate}, `;
+  };
 
   return (
     <>
@@ -128,12 +141,8 @@ const TaskStepper = () => {
                     </Flex>
                     <Spacer />
                     <Text fontSize="sm">
-                      {job.tasks &&
-                      job.tasks[job.steps] &&
-                      job.tasks[job.steps].name
-                        ? `Next:${job.tasks[job.steps].name},`
-                        : ""}
-                      Date:{new Date(job.dueDate).toLocaleDateString()}
+                      {getNextTaskDescription(job)}
+                      JobDate:{new Date(job.dueDate).toLocaleDateString()}
                     </Text>
                     <Tooltip content={job.memo}>
                       <BiNote />
