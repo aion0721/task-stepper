@@ -15,9 +15,20 @@ import {
 } from "../ui/accordion";
 import { LuCheck, LuPencilLine, LuX } from "react-icons/lu";
 import { useConfig } from "@/context/ConfigContext";
+import { appConfigDir } from "@tauri-apps/api/path";
+import { useEffect, useState } from "react";
 
 const ConfigPage = () => {
   const { legendColors, setLegendColors, userData } = useConfig();
+  const [appDataPath, setAppDataPath] = useState<string>("");
+  useEffect(() => {
+    const fetchAppConfigDir = async () => {
+      const appConfigDirPath = await appConfigDir();
+      setAppDataPath(appConfigDirPath);
+    };
+
+    fetchAppConfigDir();
+  }, []);
   return (
     <>
       <Heading>Config</Heading>
@@ -88,7 +99,10 @@ const ConfigPage = () => {
           <AccordionItem key="config" value="UserData">
             <AccordionItemTrigger>UserData</AccordionItemTrigger>
             <AccordionItemContent>
-              <Text>SavePath:{userData.dataBasePath}</Text>
+              <Text>
+                SavePath:
+                {userData.dataBasePath || appDataPath}
+              </Text>
             </AccordionItemContent>
           </AccordionItem>
         </AccordionRoot>
