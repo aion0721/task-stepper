@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/aion0721/task-stepper/compare/v1.1.1...v1.1.0) (2025-02-25)
+
+
+### Features
+
+* footer ([6581c96](https://github.com/aion0721/task-stepper/commit/6581c9693287233159d6ced600dd0c7f81f1e840))
+
+
+### Bug Fixes
+
+* show message ([28e1973](https://github.com/aion0721/task-stepper/commit/28e19739f05954bdce997dafccc312e320cf7a27))
+
 ## [1.0.0](https://github.com/aion0721/task-stepper/compare/v0.1.8...v1.0.0) (2025-02-08)
 
 
