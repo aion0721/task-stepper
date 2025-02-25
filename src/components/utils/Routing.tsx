@@ -8,6 +8,7 @@ import {
 import Header from "@/components/layout/Header";
 import { Box } from "@chakra-ui/react";
 import { Suspense, lazy } from "react";
+import Footer from "../layout/Footer";
 
 // 遅延読み込みするコンポーネント
 const TaskStepper = lazy(() => import("@/components/layout/TaskStepper"));
@@ -21,10 +22,18 @@ const rootRoute = createRootRoute({
   component: () => (
     <>
       <Header />
-      <Box height="70px" />
-      <Box height="calc(100vh - 80px)" as="main" px="20px">
+      <Box
+        as="main"
+        px="20px"
+        pt="60px" // Headerの高さ分のパディング
+        pb="40px" // Footerの高さ分のパディング
+        minHeight="calc(100vh - 100px)" // HeaderとFooterの高さを考慮
+        overflowY="auto" // スクロールバーを表示
+        position="relative" // 相対位置指定を追加
+      >
         <Outlet />
       </Box>
+      <Footer />
     </>
   ),
 });

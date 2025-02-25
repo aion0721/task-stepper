@@ -55,7 +55,6 @@ function App() {
         try {
           // Data.json
           const storeData = await load(userData.dataBasePath + "data.json");
-          console.log(userData);
 
           // get jobs
           const storeJobs = await storeData.get<Job[]>("jobs");

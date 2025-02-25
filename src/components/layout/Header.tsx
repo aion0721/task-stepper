@@ -34,7 +34,7 @@ const Header: React.FC = () => {
       left={0} // 左端に配置
       width="100%" // 横幅を全体に広げる
       zIndex={10} // 他の要素より前面に表示
-      height="60px"
+      height="60px" // 明示的な高さ指定
     >
       {/* ロゴ部分 */}
       <Flex align="center" gap={2}>
