@@ -18,6 +18,7 @@ import {
 } from "react-icons/bi";
 import { Job, JobStatus } from "@/types";
 import EditDialog from "./EditDialog";
+import { toaster } from "./ui/toaster";
 
 interface TaskStepsProps {
   job: Job;
@@ -55,6 +56,11 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
     });
   };
 
+  const getRandomPraise = (messages: string[]) => {
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    return messages[randomIndex];
+  };
+  // ステップ更新時
   const handleStepChange = (e: StepsChangeDetails) => {
     const now = new Date();
     setJobs((prev) =>
@@ -64,14 +70,29 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
           : prevJob
       )
     );
+
+    if (job.steps < e.step) {
+      toaster.create({
+        title: "[タスク更新]" + getRandomPraise(praiseMessagesForStep),
+        duration: 6000,
+        type: "success",
+      });
+    }
   };
 
+  // ジョブ完了時
   const handleClose = (jobid: string) => {
     setJobs((prev) =>
       prev.map((job: Job) =>
         job.id === jobid ? { ...job, status: JobStatus.COMPLETED } : job
       )
     );
+
+    toaster.create({
+      title: "[ジョブ完了]" + getRandomPraise(praiseMessagesForJob),
+      duration: 6000,
+      type: "success",
+    });
   };
 
   const handlePending = (jobid: string) => {
@@ -169,5 +190,41 @@ const TaskSteps = ({ job }: TaskStepsProps) => {
     </StepsRoot>
   );
 };
+
+const praiseMessagesForStep = [
+  "素晴らしい進捗だね！",
+  "さすが！次のステップも楽しみ！",
+  "一歩ずつ確実に進んでいるね！",
+  "その調子！本当に頼りになる！",
+  "更新ありがとう！最高だね！",
+  "着実に進めていてすごい！",
+  "努力が形になっているね！",
+  "いいペースだね、感心するよ！",
+  "見事なステップアップだね！",
+  "細かいところまで気を配ってくれてありがとう！",
+  "その集中力、尊敬するよ！",
+  "次の目標もきっと達成できるよ！",
+  "さすがの仕事ぶりだね！",
+  "進捗が早くて驚きだよ！",
+  "あなたの頑張りが伝わってくるよ！",
+];
+
+const praiseMessagesForJob = [
+  "ジョブ完了おめでとう！本当にすごいね！",
+  "お疲れ様でした！完璧な仕上がりだね！",
+  "やり遂げたね、素晴らしい成果だよ！",
+  "この結果、本当に感動したよ！",
+  "最後までやり切る姿勢、尊敬するよ！",
+  "最高の仕事だったね、お疲れ様！",
+  "あなたのおかげで大成功だよ、ありがとう！",
+  "完了おめでとうございます、見事でした！",
+  "努力が報われた瞬間だね、素晴らしい！",
+  "この結果はあなたの頑張りそのものだね！",
+  "素晴らしい仕事ぶりだったよ、お疲れ様！",
+  "期待以上の成果、本当にありがとう！",
+  "最後まで諦めない姿勢がすごいね！",
+  "一緒に働けて本当に良かったと思うよ、お疲れ様でした。",
+  "完璧な仕上げ、本当にありがとう！",
+];
 
 export default TaskSteps;
